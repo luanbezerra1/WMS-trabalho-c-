@@ -4,3 +4,10 @@
  * Descrição: Modelo de dados para representação de Fornecedor
 **/
 
+namespace Wms.Models
+{
+    public class Fornecedor : Pessoa
+    {
+        public string cnpj { get; set; } = string.Empty;
+    }
+}
