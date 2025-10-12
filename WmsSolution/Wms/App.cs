@@ -6,12 +6,12 @@
 
 using Microsoft.EntityFrameworkCore;
 using Wms.Models;
+using Wms.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ▶ DB: registra seu DbContext com SQLite (usa appsettings.json)
-builder.Services.AddDbContext<AppDataContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ▶ API + Swagger
 builder.Services.AddControllers();
@@ -30,8 +30,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-// endpoint de teste + seus controllers
+// ▶ Endpoint de teste + seus controllers
 app.MapGet("/", () => "API WMS rodando");
 app.MapControllers();
+
+// ▶ Registra os endpoints de Endereço
+app.MapEndpointsEndereco();
 
 app.Run();

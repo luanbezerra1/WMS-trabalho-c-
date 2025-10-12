@@ -11,7 +11,7 @@ namespace Wms.Models
         public int id { get; set; }
         public string nomeArmazem { get; set; } = string.Empty;
         public Endereco? endereco { get; set; }
-        public string status { get; set; } = string.Empty; // Ativo ou Inativo
-        public int capacidade { get; set; } // Capacidade total de posiçõesdo armazém
+        public string status { get; set; } = string.Empty; // Ativo (1) ou Inativo (0)
+        public int capacidade { get; set; } // Capacidade total de posições do armazém
     }
 }

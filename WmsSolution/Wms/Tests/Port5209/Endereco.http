@@ -1,0 +1,16 @@
+### Cadastrar produto
+POST http://localhost:5209/api/PostEndereco
+Content-Type: application/json
+
+{    
+  "rua": "Rua Teste",
+  "numero": "123",
+  "complemento": "Apto 45",
+  "bairro": "Bairro Teste",
+  "cidade": "Cidade Teste",
+  "estado": "Estado Teste",
+  "cep": "01234-567"
+}
+
+### Deletar endereço
+DELETE http://localhost:5209/api/DeleteEndereco=5

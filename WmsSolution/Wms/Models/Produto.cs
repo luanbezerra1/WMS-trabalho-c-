@@ -10,14 +10,13 @@ namespace Wms.Models
     public class Produto
     {
         public int Id { get; set; }
-         public string Sku { get; set; } = "";
+        public string Sku { get; set; } = "";
         public string nomeProduto { get; set; } = string.Empty;
         public string descricao { get; set; } = string.Empty;
         public int lote { get; set; }
         public Fornecedor? fornecedor { get; set; }
         public double preco { get; set; }
-         public Categorias Categoria { get; set; }
-
-    public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+        public Categorias Categoria { get; set; }
+        public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
     }
 }
