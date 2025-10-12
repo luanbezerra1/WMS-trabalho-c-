@@ -14,7 +14,7 @@ namespace Wms.Models
         public string nomeProduto { get; set; } = string.Empty;
         public string descricao { get; set; } = string.Empty;
         public int lote { get; set; }
-        public Fornecedor? fornecedor { get; set; }
+        public Cadastro? fornecedor { get; set; }
         public double preco { get; set; }
         public Categorias Categoria { get; set; }
         public DateTime CriadoEm { get; set; } = DateTime.UtcNow;

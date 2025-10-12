@@ -1,0 +1,49 @@
+### GET - Listar todos os usuários
+GET http://localhost:5209/api/GetUsuario
+Content-Type: application/json
+
+### GET - Buscar usuário por ID
+GET http://localhost:5209/api/GetUsuarioById=1
+Content-Type: application/json
+
+### GET - Buscar usuário por Login
+GET http://localhost:5209/api/GetUsuarioByLogin=admin
+Content-Type: application/json
+
+### POST - Cadastrar novo usuário
+POST http://localhost:5209/api/PostUsuario
+Content-Type: application/json
+
+{
+  "nome": "Admin",
+  "login": "admin",
+  "senha": "admin123",
+  "cargo": "Gerente"
+}
+
+### POST - Cadastrar outro usuário
+POST http://localhost:5209/api/PostUsuario
+Content-Type: application/json
+
+{
+  "nome": "João Silva",
+  "login": "joao.silva",
+  "senha": "senha123",
+  "cargo": "Operador"
+}
+
+### PUT - Alterar usuário
+PUT http://localhost:5209/api/PutUsuario=1
+Content-Type: application/json
+
+{
+  "nome": "Administrador do Sistema",
+  "login": "admin",
+  "senha": "novasenha123",
+  "cargo": "Gerente Geral"
+}
+
+### DELETE - Deletar usuário
+DELETE http://localhost:5209/api/DeleteUsuario=1
+Content-Type: application/json
+
