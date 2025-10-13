@@ -1,0 +1,67 @@
+### GET - Listar todos os armazéns
+GET http://localhost:5209/api/ControleArmazem
+Content-Type: application/json
+
+
+### GET - Buscar armazém por ID
+GET http://localhost:5209/api/ControleArmazem/1
+Content-Type: application/json
+
+
+### POST - Cadastrar novo armazém
+POST http://localhost:5209/api/ControleArmazem
+Content-Type: application/json
+
+{
+  "nomeArmazem": "Armazém Central",
+  "status": "Ativo",
+  "capacidade": 5000,
+  "endereco": {
+    "rua": "Rua das Indústrias",
+    "numero": 120,
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "cep": "81600-030"
+  }
+}
+
+
+### POST - Cadastrar outro armazém
+POST http://localhost:5209/api/ControleArmazem
+Content-Type: application/json
+
+{
+  "nomeArmazem": "Armazém Litoral",
+  "status": "Inativo",
+  "capacidade": 2000,
+  "endereco": {
+    "rua": "Av. Atlântica",
+    "numero": 450,
+    "cidade": "Itajaí",
+    "estado": "SC",
+    "cep": "88300-000"
+  }
+}
+
+
+### PUT - Atualizar armazém existente
+PUT http://localhost:5209/api/ControleArmazem/1
+Content-Type: application/json
+
+{
+  "nomeArmazem": "Armazém Central Atualizado",
+  "status": "Ativo",
+  "capacidade": 5500,
+  "endereco": {
+    "rua": "Rua das Indústrias",
+    "numero": 120,
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "cep": "80000-000"
+  }
+}
+
+
+### DELETE - Excluir armazém
+DELETE http://localhost:5209/api/ControleArmazem/1
+Content-Type: application/json
