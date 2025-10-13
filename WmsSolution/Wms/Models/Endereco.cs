@@ -10,7 +10,7 @@ namespace Wms.Models
 {
     public class Endereco
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string rua { get; set; } = string.Empty;
         public string numero { get; set; } = string.Empty;
         public string complemento { get; set; } = string.Empty;
@@ -36,7 +36,7 @@ namespace Wms.Models
             {
                 return 1;
             }
-            return ctx.Endereco.Max(e => e.id) + 1;
+            return ctx.Endereco.Max(e => e.Id) + 1;
         }
 
         

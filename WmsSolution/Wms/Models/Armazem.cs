@@ -8,7 +8,7 @@ namespace Wms.Models
 {
     public class Armazem
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string nomeArmazem { get; set; } = string.Empty;
         public Endereco? endereco { get; set; }
         public string status { get; set; } = string.Empty; // Ativo (1) ou Inativo (0)

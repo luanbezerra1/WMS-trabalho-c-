@@ -54,7 +54,7 @@ namespace Wms.Controllers
 
                 */
 
-                Usuario? resultado = ctx.Usuario.FirstOrDefault(x => x.id == id);
+                Usuario? resultado = ctx.Usuario.FirstOrDefault(x => x.Id == id);
 
                 if (resultado is null)
                 {
@@ -98,9 +98,9 @@ namespace Wms.Controllers
 
                 */
 
-                if (usuario.id != 0)
+                if (usuario.Id != 0)
                 {
-                    Usuario? resultado = ctx.Usuario.FirstOrDefault(x => x.id == usuario.id);
+                    Usuario? resultado = ctx.Usuario.FirstOrDefault(x => x.Id == usuario.Id);
 
                     if (resultado is not null)
                     {
@@ -116,7 +116,7 @@ namespace Wms.Controllers
                 }
                 
                 Usuario novoUsuario = Usuario.Criar(usuario.nome, usuario.login, usuario.senha, usuario.cargo);
-                novoUsuario.id = Usuario.GerarId(ctx);
+                novoUsuario.Id = Usuario.GerarId(ctx);
                 
                 ctx.Usuario.Add(novoUsuario);
                 ctx.SaveChanges();
@@ -168,7 +168,7 @@ namespace Wms.Controllers
                 }
 
                 // Valida se o login já existe (exceto para o próprio usuário)
-                Usuario? loginExistente = ctx.Usuario.FirstOrDefault(x => x.login == usuarioAlterado.login && x.id != id);
+                Usuario? loginExistente = ctx.Usuario.FirstOrDefault(x => x.login == usuarioAlterado.login && x.Id != id);
                 if (loginExistente is not null)
                 {
                     return Results.Conflict("Esse login já está em uso!");

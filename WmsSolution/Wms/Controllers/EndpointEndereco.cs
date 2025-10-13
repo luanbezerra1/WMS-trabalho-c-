@@ -54,7 +54,7 @@ namespace Wms.Controllers
 
                 */
 
-                Endereco? resultado = ctx.Endereco.FirstOrDefault(x => x.id == id);
+                Endereco? resultado = ctx.Endereco.FirstOrDefault(x => x.Id == id);
 
                 if (resultado is null)
                 {
@@ -76,9 +76,9 @@ namespace Wms.Controllers
 
                 */
 
-                if (endereco.id != 0)
+                if (endereco.Id != 0)
                 {
-                    Endereco? resultado = ctx.Endereco.FirstOrDefault(x => x.id == endereco.id);
+                    Endereco? resultado = ctx.Endereco.FirstOrDefault(x => x.Id == endereco.Id);
 
                     if (resultado is not null)
                     {

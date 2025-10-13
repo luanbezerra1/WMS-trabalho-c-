@@ -8,7 +8,7 @@ namespace Wms.Models
 {
     public class Usuario
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string nome { get; set; } = string.Empty;
         public string login { get; set; } = string.Empty;
         public string senha { get; set; } = string.Empty;
@@ -31,7 +31,7 @@ namespace Wms.Models
             {
                 return 1;
             }
-            return ctx.Usuario.Max(u => u.id) + 1;
+            return ctx.Usuario.Max(u => u.Id) + 1;
         }
 
         
