@@ -1,16 +1,17 @@
-namespace Wms.Models
+/**
+ * Autor: Vitor
+ * Data de Criação: 13/10/2025
+ * Descrição: Modelo de dados para controle de inventário do armazém
+**/
 
+namespace Wms.Models
 {
     public class Inventario
-{
-    public int ArmazemId { get; set; }
-    public Armazem? Armazem { get; set; }
-
-    public int ProdutoId { get; set; }
-    public Produto? Produto { get; set; }
-
-    public string PosicaoCodigo { get; set; } = "";   // ex: "A1-01-02"
-    public int Quantidade { get; set; }
-
+    {
+        public int armazemId { get; set; }
+        public int posicaoId { get; set; } // ex: "P101"
+        public int produtoId { get; set; }
+        public int quantidade { get; set; }
+        public DateTime ultimaMovimentacao { get; set; } = DateTime.UtcNow;
     }
 }

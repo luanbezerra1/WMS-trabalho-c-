@@ -37,8 +37,17 @@ app.MapControllers();
 // ▶ Registra os endpoints de Endereço
 app.MapEndpointsEndereco();
 
-// ▶ Registra os endpoints de Cadastro (Cliente/Fornecedor)
-// app.MapEndpointsCadastro();
+// ▶ Registra os endpoints de Cliente
+app.MapEndpointsCliente();
+
+// ▶ Registra os endpoints de Fornecedor
+app.MapEndpointsFornecedor();
+
+// ▶ Registra os endpoints de Armazém
+app.MapEndpointsArmazem();
+
+// ▶ Registra os endpoints de Produto
+app.MapEndpointsProduto();
 
 // ▶ Registra os endpoints de Usuário
 app.MapEndpointsUsuario();

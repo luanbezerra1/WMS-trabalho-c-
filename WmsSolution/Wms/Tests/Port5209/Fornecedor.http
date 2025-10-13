@@ -1,0 +1,100 @@
+### GET - Listar todos os fornecedores
+GET http://localhost:5209/api/GetFornecedor
+Content-Type: application/json
+
+### GET - Buscar fornecedor por ID
+GET http://localhost:5209/api/GetFornecedorById=1
+Content-Type: application/json
+
+### GET - Buscar fornecedor por CNPJ
+GET http://localhost:5209/api/GetFornecedorByCnpj=12.345.678/0001-90
+Content-Type: application/json
+
+### POST - Cadastrar novo fornecedor
+POST http://localhost:5209/api/PostFornecedor
+Content-Type: application/json
+
+{
+  "nome": "Empresa XYZ Ltda",
+  "email": "contato@empresaxyz.com.br",
+  "telefone": "(41) 3333-5555",
+  "cnpj": "12.345.678/0001-90",
+  "enderecoId": 1
+}
+
+### POST - Cadastrar fornecedor sem endereço
+POST http://localhost:5209/api/PostFornecedor
+Content-Type: application/json
+
+{
+  "nome": "Distribuidora ABC S.A.",
+  "email": "vendas@distribuidoraabc.com.br",
+  "telefone": "(41) 3222-7777",
+  "cnpj": "98.765.432/0001-10"
+}
+
+### POST - Cadastrar outro fornecedor
+POST http://localhost:5209/api/PostFornecedor
+Content-Type: application/json
+
+{
+  "nome": "Comércio DEF Eireli",
+  "email": "contato@comerciodef.com.br",
+  "telefone": "(41) 3111-9999",
+  "cnpj": "11.222.333/0001-44",
+  "enderecoId": 2
+}
+
+### PUT - Alterar fornecedor
+PUT http://localhost:5209/api/PutFornecedor=1
+Content-Type: application/json
+
+{
+  "nome": "Empresa XYZ Comércio Ltda",
+  "email": "novoemail@empresaxyz.com.br",
+  "telefone": "(41) 3333-9999",
+  "cnpj": "12.345.678/0001-90",
+  "enderecoId": 1
+}
+
+### DELETE - Deletar fornecedor
+DELETE http://localhost:5209/api/DeleteFornecedor=1
+Content-Type: application/json
+
+### ============================================
+### TESTES DE VALIDAÇÃO
+### ============================================
+
+### POST - Tentar cadastrar sem CNPJ (deve retornar erro)
+POST http://localhost:5209/api/PostFornecedor
+Content-Type: application/json
+
+{
+  "nome": "Teste Sem CNPJ",
+  "email": "teste@email.com",
+  "telefone": "(41) 3333-3333"
+}
+
+### POST - Tentar cadastrar com CNPJ duplicado (deve retornar erro)
+POST http://localhost:5209/api/PostFornecedor
+Content-Type: application/json
+
+{
+  "nome": "Teste CNPJ Duplicado",
+  "email": "teste2@email.com",
+  "telefone": "(41) 3333-2222",
+  "cnpj": "12.345.678/0001-90"
+}
+
+### POST - Tentar cadastrar com endereço inexistente (deve retornar erro)
+POST http://localhost:5209/api/PostFornecedor
+Content-Type: application/json
+
+{
+  "nome": "Teste Endereço Inválido",
+  "email": "teste3@email.com",
+  "telefone": "(41) 3333-1111",
+  "cnpj": "55.666.777/0001-88",
+  "enderecoId": 99999
+}
+
