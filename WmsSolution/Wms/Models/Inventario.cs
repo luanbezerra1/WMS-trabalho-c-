@@ -9,6 +9,9 @@ namespace Wms.Models
    public class Inventario
 {
     public int ArmazemId { get; set; }
+
+    public int PosicaoID {get;set;}
+
     public int ProdutoId { get; set; }
     public Produto? Produto { get; set; }
 

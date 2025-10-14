@@ -89,7 +89,7 @@ public class AppDataContext : DbContext
         modelBuilder.Entity<EntradaProduto>()
             .HasOne(e => e.Produto)
             .WithMany()
-            .HasForeignKey(e => e.ProdutoId)
+            .HasForeignKey(e => e.ProdutoId)luan
             .OnDelete(DeleteBehavior.Restrict);
 
 
