@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wms.Models;
 
@@ -10,9 +11,11 @@ using Wms.Models;
 namespace Wms.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20251014012944_MapeiaFornecedorEndereco")]
+    partial class MapeiaFornecedorEndereco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -122,32 +125,6 @@ namespace Wms.Migrations
                     b.ToTable("Endereco");
                 });
 
-            modelBuilder.Entity("Wms.Models.EntradaProduto", b =>
-                {
-                    b.Property<int>("EntradaId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DataEntrada")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("FornecedorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("QuantidadeRecebida")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("EntradaId", "ProdutoId");
-
-                    b.HasIndex("FornecedorId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("EntradaProduto");
-                });
-
             modelBuilder.Entity("Wms.Models.Fornecedor", b =>
                 {
                     b.Property<int>("Id")
@@ -238,32 +215,6 @@ namespace Wms.Migrations
                     b.ToTable("Produto");
                 });
 
-            modelBuilder.Entity("Wms.Models.SaidaProduto", b =>
-                {
-                    b.Property<int>("SaidaId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DataSaida")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("QuantidadeRetirada")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SaidaId", "ProdutoId");
-
-                    b.HasIndex("ClienteId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("SaidaProduto");
-                });
-
             modelBuilder.Entity("Wms.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -302,25 +253,6 @@ namespace Wms.Migrations
                     b.Navigation("Endereco");
                 });
 
-            modelBuilder.Entity("Wms.Models.EntradaProduto", b =>
-                {
-                    b.HasOne("Wms.Models.Fornecedor", "Fornecedor")
-                        .WithMany()
-                        .HasForeignKey("FornecedorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Wms.Models.Produto", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Fornecedor");
-
-                    b.Navigation("Produto");
-                });
-
             modelBuilder.Entity("Wms.Models.Fornecedor", b =>
                 {
                     b.HasOne("Wms.Models.Endereco", "Endereco")
@@ -345,25 +277,6 @@ namespace Wms.Migrations
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Produto");
-                });
-
-            modelBuilder.Entity("Wms.Models.SaidaProduto", b =>
-                {
-                    b.HasOne("Wms.Models.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Wms.Models.Produto", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
 
                     b.Navigation("Produto");
                 });

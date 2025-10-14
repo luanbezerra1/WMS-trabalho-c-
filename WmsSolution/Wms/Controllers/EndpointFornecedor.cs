@@ -122,16 +122,17 @@ namespace Wms.Controllers
                 }
 
                 // Valida se o endereço existe (caso tenha sido informado)
-                if (fornecedor.enderecoId.HasValue)
+                // if (fornecedor.enderecoId.HasValue)  // ERRADO
+                if (fornecedor.EnderecoId > 0)          
                 {
-                    Endereco? enderecoExistente = ctx.Endereco.Find(fornecedor.enderecoId.Value);
+                    Endereco? enderecoExistente = ctx.Endereco.Find(fornecedor.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {fornecedor.enderecoId} não encontrado!");
+                        return Results.NotFound($"Endereço com ID {fornecedor.EnderecoId} não encontrado!");
                     }
                 }
                 
-                Fornecedor novoFornecedor = Fornecedor.Criar(fornecedor.nome, fornecedor.email, fornecedor.telefone, fornecedor.cnpj, fornecedor.enderecoId);
+                Fornecedor novoFornecedor = Fornecedor.Criar(fornecedor.nome, fornecedor.email, fornecedor.telefone, fornecedor.cnpj, fornecedor.EnderecoId);
                 novoFornecedor.Id = Fornecedor.GerarId(ctx);
                 
                 ctx.Fornecedor.Add(novoFornecedor);
@@ -197,16 +198,16 @@ namespace Wms.Controllers
                 }
 
                 // Valida se o endereço existe (caso tenha sido informado)
-                if (fornecedorAlterado.enderecoId.HasValue)
+                if (fornecedorAlterado.EnderecoId > 0)
                 {
-                    Endereco? enderecoExistente = ctx.Endereco.Find(fornecedorAlterado.enderecoId.Value);
+                    Endereco? enderecoExistente = ctx.Endereco.Find(fornecedorAlterado.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {fornecedorAlterado.enderecoId} não encontrado!");
+                        return Results.NotFound($"Endereço com ID {fornecedorAlterado.EnderecoId} não encontrado!");
                     }
                 }
                 
-                resultado.Alterar(fornecedorAlterado.nome, fornecedorAlterado.email, fornecedorAlterado.telefone, fornecedorAlterado.cnpj, fornecedorAlterado.enderecoId);
+                resultado.Alterar(fornecedorAlterado.nome, fornecedorAlterado.email, fornecedorAlterado.telefone, fornecedorAlterado.cnpj, fornecedorAlterado.EnderecoId);
 
                 ctx.Fornecedor.Update(resultado);
                 ctx.SaveChanges();

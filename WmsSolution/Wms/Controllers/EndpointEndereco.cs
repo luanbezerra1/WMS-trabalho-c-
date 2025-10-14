@@ -86,7 +86,7 @@ namespace Wms.Controllers
                     }
                 }
                 
-                Endereco novoEndereco = Endereco.Criar(endereco.rua, endereco.numero, endereco.complemento, endereco.bairro, endereco.cidade, endereco.estado, endereco.cep);
+                Endereco novoEndereco = Endereco.Criar(endereco.Rua, endereco.Numero, endereco.Complemento, endereco.Bairro, endereco.Cidade, endereco.Estado, endereco.Cep);
                 
                 ctx.Endereco.Add(novoEndereco);
                 ctx.SaveChanges();
@@ -137,7 +137,7 @@ namespace Wms.Controllers
                     return Results.NotFound("Endereço não encontrado!");
                 }
                 
-                resultado.Alterar(enderecoAlterado.rua, enderecoAlterado.numero, enderecoAlterado.complemento, enderecoAlterado.bairro, enderecoAlterado.cidade, enderecoAlterado.estado, enderecoAlterado.cep);
+                resultado.Alterar(enderecoAlterado.Rua, enderecoAlterado.Numero, enderecoAlterado.Complemento, enderecoAlterado.Bairro, enderecoAlterado.Cidade, enderecoAlterado.Estado, enderecoAlterado.Cep);
 
                 ctx.Endereco.Update(resultado);
                 ctx.SaveChanges();

@@ -43,9 +43,6 @@ app.MapEndpointsCliente();
 // ▶ Registra os endpoints de Fornecedor
 app.MapEndpointsFornecedor();
 
-// ▶ Registra os endpoints de Armazém
-app.MapEndpointsArmazem();
-
 // ▶ Registra os endpoints de Produto
 app.MapEndpointsProduto();
 

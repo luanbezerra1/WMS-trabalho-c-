@@ -6,12 +6,13 @@
 
 namespace Wms.Models
 {
-    public class Inventario
-    {
-        public int armazemId { get; set; }
-        public int posicaoId { get; set; } // ex: "P101"
-        public int produtoId { get; set; }
-        public int quantidade { get; set; }
-        public DateTime ultimaMovimentacao { get; set; } = DateTime.UtcNow;
-    }
+   public class Inventario
+{
+    public int ArmazemId { get; set; }
+    public int ProdutoId { get; set; }
+    public Produto? Produto { get; set; }
+
+    public int Quantidade { get; set; }
+    public DateTime ultimaMovimentacao { get; set; } = DateTime.UtcNow;
+}
 }

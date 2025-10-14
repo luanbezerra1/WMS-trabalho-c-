@@ -9,13 +9,15 @@ namespace Wms.Models
     public class Cliente
     {
         public int Id { get; set; }
-        public string nome { get; set; } = string.Empty;
-        public string email { get; set; } = string.Empty;
-        public string telefone { get; set; } = string.Empty;
-        public string cpf { get; set; } = string.Empty;
-        public int? enderecoId { get; set; }
 
-        
+        public string Nome { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Telefone { get; set; } = string.Empty;
+        public string Cpf { get; set; } = string.Empty;
+
+        public int EnderecoId { get; set; }
+        public Endereco? Endereco { get; set; }
+
         public static int GerarId(AppDataContext ctx)
         {
             /*
@@ -27,18 +29,17 @@ namespace Wms.Models
             Return: id(int)
             
             */
-    
+
             if (!ctx.Cliente.Any())
             {
                 return 1;
             }
             return ctx.Cliente.Max(c => c.Id) + 1;
         }
-
         
-        public static Cliente Criar(string nome, string email, string telefone, string cpf, int? enderecoId)
-        {
-            /*
+        public static Cliente Criar(string nome, string email, string telefone, string cpf, int enderecoId)
+
+          /*
             
             Autor: Vitor
             Data de Criação: 13/10/2025
@@ -47,21 +48,21 @@ namespace Wms.Models
             Return: Cliente(Cliente)
             
             */
-        
+
+        {
             return new Cliente
             {
-                nome = nome,
-                email = email,
-                telefone = telefone,
-                cpf = cpf,
-                enderecoId = enderecoId
+                Nome = nome,
+                Email = email,
+                Telefone = telefone,
+                Cpf = cpf,
+                EnderecoId = enderecoId
             };
         }
 
-        
-        public void Alterar(string nome, string email, string telefone, string cpf, int? enderecoId)
-        {
-            /*
+        public void Alterar(string nome, string email, string telefone, string cpf, int enderecoId)
+
+         /*
             
             Autor: Vitor
             Data de Criação: 13/10/2025
@@ -71,17 +72,19 @@ namespace Wms.Models
             
             */
 
-            this.nome = nome;
-            this.email = email;
-            this.telefone = telefone;
-            this.cpf = cpf;
-            this.enderecoId = enderecoId;
+        {
+
+            Nome = nome;
+            Email = email;
+            Telefone = telefone;
+            Cpf = cpf;
+            EnderecoId = enderecoId;
         }
 
-        
+
         public static void Deletar(AppDataContext ctx, int id)
-        {
-            /*
+
+         /*
             
             Autor: Vitor
             Data de Criação: 13/10/2025
@@ -90,8 +93,9 @@ namespace Wms.Models
             Return: None
             
             */
-
-            Cliente? cliente = ctx.Cliente.Find(id);
+            
+        {
+            var cliente = ctx.Cliente.Find(id);
             if (cliente is not null)
             {
                 ctx.Cliente.Remove(cliente);

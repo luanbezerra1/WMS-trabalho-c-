@@ -76,7 +76,7 @@ namespace Wms.Controllers
 
                 */
 
-                Cliente? resultado = ctx.Cliente.FirstOrDefault(x => x.cpf == cpf);
+                Cliente? resultado = ctx.Cliente.FirstOrDefault(x => x.Cpf == cpf);
 
                 if (resultado is null)
                 {
@@ -109,29 +109,29 @@ namespace Wms.Controllers
                 }
 
                 // Valida se o CPF foi informado
-                if (string.IsNullOrEmpty(cliente.cpf))
+                if (string.IsNullOrEmpty(cliente.Cpf))
                 {
                     return Results.BadRequest("Cliente deve ter CPF informado!");
                 }
 
                 // Valida se CPF já existe
-                Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.cpf == cliente.cpf);
+                Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == cliente.Cpf);
                 if (cpfExistente is not null)
                 {
                     return Results.Conflict("Esse CPF já está cadastrado!");
                 }
 
                 // Valida se o endereço existe (caso tenha sido informado)
-                if (cliente.enderecoId.HasValue)
+                if (cliente.EnderecoId > 0)
                 {
-                    Endereco? enderecoExistente = ctx.Endereco.Find(cliente.enderecoId.Value);
+                    Endereco? enderecoExistente = ctx.Endereco.Find(cliente.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {cliente.enderecoId} não encontrado!");
+                        return Results.NotFound($"Endereço com ID {cliente.EnderecoId} não encontrado!");
                     }
                 }
                 
-                Cliente novoCliente = Cliente.Criar(cliente.nome, cliente.email, cliente.telefone, cliente.cpf, cliente.enderecoId);
+                Cliente novoCliente = Cliente.Criar(cliente.Nome, cliente.Email, cliente.Telefone, cliente.Cpf, cliente.EnderecoId);
                 novoCliente.Id = Cliente.GerarId(ctx);
                 
                 ctx.Cliente.Add(novoCliente);
@@ -184,29 +184,29 @@ namespace Wms.Controllers
                 }
 
                 // Valida se o CPF foi informado
-                if (string.IsNullOrEmpty(clienteAlterado.cpf))
+                if (string.IsNullOrEmpty(clienteAlterado.Cpf))
                 {
                     return Results.BadRequest("Cliente deve ter CPF informado!");
                 }
 
                 // Valida se CPF já existe (exceto para o próprio cliente)
-                Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.cpf == clienteAlterado.cpf && x.Id != id);
+                Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == clienteAlterado.Cpf && x.Id != id);
                 if (cpfExistente is not null)
                 {
                     return Results.Conflict("Esse CPF já está cadastrado!");
                 }
 
                 // Valida se o endereço existe (caso tenha sido informado)
-                if (clienteAlterado.enderecoId.HasValue)
+                if (clienteAlterado.EnderecoId > 0)
                 {
-                    Endereco? enderecoExistente = ctx.Endereco.Find(clienteAlterado.enderecoId.Value);
+                    Endereco? enderecoExistente = ctx.Endereco.Find(clienteAlterado.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {clienteAlterado.enderecoId} não encontrado!");
+                        return Results.NotFound($"Endereço com ID {clienteAlterado.EnderecoId} não encontrado!");
                     }
                 }
                 
-                resultado.Alterar(clienteAlterado.nome, clienteAlterado.email, clienteAlterado.telefone, clienteAlterado.cpf, clienteAlterado.enderecoId);
+                resultado.Alterar(clienteAlterado.Nome, clienteAlterado.Email, clienteAlterado.Telefone, clienteAlterado.Cpf, clienteAlterado.EnderecoId);
 
                 ctx.Cliente.Update(resultado);
                 ctx.SaveChanges();

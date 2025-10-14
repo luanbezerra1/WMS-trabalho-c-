@@ -13,9 +13,10 @@ namespace Wms.Models
         public string email { get; set; } = string.Empty;
         public string telefone { get; set; } = string.Empty;
         public string cnpj { get; set; } = string.Empty;
-        public int? enderecoId { get; set; }
 
-        
+        public int EnderecoId { get; set; }           // FK obrigatória
+        public Endereco? Endereco { get; set; }       // navegação (opcional)
+
         public static int GerarId(AppDataContext ctx)
         {
             /*
@@ -27,7 +28,7 @@ namespace Wms.Models
             Return: id(int)
             
             */
-    
+
             if (!ctx.Fornecedor.Any())
             {
                 return 1;
@@ -35,38 +36,36 @@ namespace Wms.Models
             return ctx.Fornecedor.Max(f => f.Id) + 1;
         }
 
-        
-        public static Fornecedor Criar(string nome, string email, string telefone, string cnpj, int? enderecoId)
+        public static Fornecedor Criar(string nome, string email, string telefone, string cnpj, int enderecoId)
         {
             /*
             
             Autor: Vitor
             Data de Criação: 13/10/2025
             Descrição: Metodo responsavel por criar um fornecedor.
-            Args: nome(string), email(string), telefone(string), cnpj(string), enderecoId(int?)
+            Args: nome(string), email(string), telefone(string), cnpj(string), enderecoId(int)
             Return: Fornecedor(Fornecedor)
             
             */
-        
+
             return new Fornecedor
             {
                 nome = nome,
                 email = email,
                 telefone = telefone,
                 cnpj = cnpj,
-                enderecoId = enderecoId
+                EnderecoId = enderecoId   
             };
         }
 
-        
-        public void Alterar(string nome, string email, string telefone, string cnpj, int? enderecoId)
+        public void Alterar(string nome, string email, string telefone, string cnpj, int enderecoId)
         {
             /*
             
             Autor: Vitor
             Data de Criação: 13/10/2025
             Descrição: Metodo responsavel por alterar um fornecedor.
-            Args: nome(string), email(string), telefone(string), cnpj(string), enderecoId(int?)
+            Args: nome(string), email(string), telefone(string), cnpj(string), enderecoId(int)
             Return: None
             
             */
@@ -75,10 +74,9 @@ namespace Wms.Models
             this.email = email;
             this.telefone = telefone;
             this.cnpj = cnpj;
-            this.enderecoId = enderecoId;
+            this.EnderecoId = enderecoId;   
         }
 
-        
         public static void Deletar(AppDataContext ctx, int id)
         {
             /*
@@ -100,4 +98,3 @@ namespace Wms.Models
         }
     }
 }
-

@@ -11,15 +11,16 @@ namespace Wms.Models
     public class Endereco
     {
         public int Id { get; set; }
-        public string rua { get; set; } = string.Empty;
-        public string numero { get; set; } = string.Empty;
-        public string complemento { get; set; } = string.Empty;
-        public string bairro { get; set; } = string.Empty;
-        public string cidade { get; set; } = string.Empty;
-        public string estado { get; set; } = string.Empty;
-        public string cep { get; set; } = string.Empty;
-
+        public string Rua { get; set; } = string.Empty;
+        public string Numero { get; set; } = string.Empty;
+        public string Complemento { get; set; } = string.Empty;
+        public string Bairro { get; set; } = string.Empty;
+        public string Cidade { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
+        public string Cep { get; set; } = string.Empty;
         
+        public ICollection<Cliente>? Clientes { get; set; } //1:N
+
         public static int GerarId(AppDataContext ctx)
         {
             /*
@@ -40,7 +41,7 @@ namespace Wms.Models
         }
 
         
-        public static Endereco Criar(string rua, string numero, string complemento, string bairro, string cidade, string estado, string cep)
+        public static Endereco Criar(string Rua, string Numero, string Complemento, string Bairro, string Cidade, string Estado, string Cep)
         {
             /*
 
@@ -55,17 +56,17 @@ namespace Wms.Models
             return new Endereco
             {
 
-                rua = rua,  
-                numero = numero,
-                complemento = complemento,
-                bairro = bairro,
-                cidade = cidade,
-                estado = estado,
-                cep = cep
+                Rua = Rua,  
+                Numero = Numero,
+                Complemento = Complemento,
+                Bairro = Bairro,
+                Cidade = Cidade,
+                Estado = Estado,
+                Cep = Cep
             };
         }
 
-        public void Alterar(string rua, string numero, string complemento, string bairro, string cidade, string estado, string cep)
+        public void Alterar(string Rua, string Numero, string Complemento, string Bairro, string Cidade, string Estado, string Cep)
         {
             /*
 
@@ -77,13 +78,13 @@ namespace Wms.Models
 
             */
 
-            this.rua = rua;
-            this.numero = numero;
-            this.complemento = complemento;
-            this.bairro = bairro;
-            this.cidade = cidade;
-            this.estado = estado;
-            this.cep = cep;
+            this.Rua = Rua;
+            this.Numero = Numero;
+            this.Complemento = Complemento;
+            this.Bairro = Bairro;
+            this.Cidade = Cidade;
+            this.Estado = Estado;
+            this.Cep = Cep;
         }
 
         
