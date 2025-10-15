@@ -15,6 +15,8 @@ public class AppDataContext : DbContext
     public DbSet<Cliente> Cliente { get; set; }
     public DbSet<Fornecedor> Fornecedor { get; set; }
     public DbSet<Inventario> Inventario { get; set; }
+    public DbSet<EntradaProduto> EntradaProduto {get ; set;}   
+    public DbSet<SaidaProduto> SaidaProduto { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,28 +24,24 @@ public class AppDataContext : DbContext
 
         // INVENTARIO — PK composta (Armazem + Produto)
         
-        modelBuilder.Entity<Inventario>()
-            .HasKey(i => new { i.ArmazemId, i.ProdutoId });
+       modelBuilder.Entity<Inventario>()
+        .HasKey(i => new { i.ArmazemId, i.ProdutoId }); // PK composta
 
-        modelBuilder.Entity<Inventario>()
-            .HasOne<Armazem>()
-            .WithMany()
-            .HasForeignKey(i => i.ArmazemId)
-            .OnDelete(DeleteBehavior.Restrict);
+    modelBuilder.Entity<Inventario>()
+        .HasOne(i => i.Armazem)
+        .WithMany(a => a.Inventarios)
+        .HasForeignKey(i => i.ArmazemId)
+        .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Inventario>()
-            .HasOne(i => i.Produto)
-            .WithMany()
-            .HasForeignKey(i => i.ProdutoId)
-            .OnDelete(DeleteBehavior.Restrict);
+    modelBuilder.Entity<Inventario>()
+        .HasOne(i => i.Produto)
+        .WithMany(p => p.Inventarios)
+        .HasForeignKey(i => i.ProdutoId)
+        .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Inventario>()
-            .Property(i => i.Quantidade)
-            .IsRequired();
-
-        modelBuilder.Entity<Inventario>()
-            .Property(i => i.ultimaMovimentacao)
-            .IsRequired();
+    // Opcional: índice para consultas por posição
+    modelBuilder.Entity<Inventario>()
+        .HasIndex(i => i.PosicaoID);
 
     // ------------------------------------------------------
         // CLIENTE -> ENDERECO (FK obrigatória)
@@ -89,7 +87,7 @@ public class AppDataContext : DbContext
         modelBuilder.Entity<EntradaProduto>()
             .HasOne(e => e.Produto)
             .WithMany()
-            .HasForeignKey(e => e.ProdutoId)luan
+            .HasForeignKey(e => e.ProdutoId)
             .OnDelete(DeleteBehavior.Restrict);
 
 

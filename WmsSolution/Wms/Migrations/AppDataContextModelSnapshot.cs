@@ -26,13 +26,13 @@ namespace Wms.Migrations
                     b.Property<int>("Capacidade")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Posicoes")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProdutoPosicao")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("enderecoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("nomeArmazem")
@@ -44,6 +44,8 @@ namespace Wms.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EnderecoId");
 
                     b.ToTable("Armazem");
                 });
@@ -191,13 +193,18 @@ namespace Wms.Migrations
                     b.Property<int>("ProdutoId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("PosicaoID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Quantidade")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("ultimaMovimentacao")
+                    b.Property<DateTime>("UltimaMovimentacao")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ArmazemId", "ProdutoId");
+
+                    b.HasIndex("PosicaoID");
 
                     b.HasIndex("ProdutoId");
 
@@ -291,6 +298,17 @@ namespace Wms.Migrations
                     b.ToTable("Usuario");
                 });
 
+            modelBuilder.Entity("Wms.Models.Armazem", b =>
+                {
+                    b.HasOne("Wms.Models.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Endereco");
+                });
+
             modelBuilder.Entity("Wms.Models.Cliente", b =>
                 {
                     b.HasOne("Wms.Models.Endereco", "Endereco")
@@ -334,17 +352,19 @@ namespace Wms.Migrations
 
             modelBuilder.Entity("Wms.Models.Inventario", b =>
                 {
-                    b.HasOne("Wms.Models.Armazem", null)
-                        .WithMany()
+                    b.HasOne("Wms.Models.Armazem", "Armazem")
+                        .WithMany("Inventarios")
                         .HasForeignKey("ArmazemId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Wms.Models.Produto", "Produto")
-                        .WithMany()
+                        .WithMany("Inventarios")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Armazem");
 
                     b.Navigation("Produto");
                 });
@@ -368,9 +388,19 @@ namespace Wms.Migrations
                     b.Navigation("Produto");
                 });
 
+            modelBuilder.Entity("Wms.Models.Armazem", b =>
+                {
+                    b.Navigation("Inventarios");
+                });
+
             modelBuilder.Entity("Wms.Models.Endereco", b =>
                 {
                     b.Navigation("Clientes");
+                });
+
+            modelBuilder.Entity("Wms.Models.Produto", b =>
+                {
+                    b.Navigation("Inventarios");
                 });
 #pragma warning restore 612, 618
         }

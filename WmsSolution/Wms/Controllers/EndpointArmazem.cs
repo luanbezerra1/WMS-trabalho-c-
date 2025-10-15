@@ -15,7 +15,7 @@ namespace Wms.Endpoints
         {
             /**
              * Autor: Cauã Tobias
-             * Data de Criação: 14/10/2025
+             * Data de Criação: 14/10/2052
              * Descrição: Endpoint para listar todos os armazéns
             **/
             app.MapGet("/api/GetArmazem", ([FromServices] AppDataContext context) =>
@@ -69,7 +69,7 @@ namespace Wms.Endpoints
                 armazem.Posicoes = armazemAtualizado.Posicoes;
                 armazem.ProdutoPosicao = armazemAtualizado.ProdutoPosicao;
                 armazem.Capacidade = armazemAtualizado.Capacidade;
-                armazem.enderecoId = armazemAtualizado.enderecoId;
+                armazem.EnderecoId = armazemAtualizado.EnderecoId;
 
                 context.SaveChanges();
 

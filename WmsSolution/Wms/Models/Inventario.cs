@@ -9,13 +9,14 @@ namespace Wms.Models
    public class Inventario
 {
     public int ArmazemId { get; set; }
+    public Armazem? Armazem { get; set; }
 
     public int PosicaoID {get;set;}
 
     public int ProdutoId { get; set; }
-    public Produto? Produto { get; set; }
+    public Produto Produto { get; set; } = null!;
 
     public int Quantidade { get; set; }
-    public DateTime ultimaMovimentacao { get; set; } = DateTime.UtcNow;
+    public DateTime UltimaMovimentacao { get; set; } = DateTime.UtcNow;
 }
 }

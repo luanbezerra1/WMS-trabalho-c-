@@ -17,6 +17,12 @@ namespace Wms.Models
         public Categorias Categoria { get; set; }
         public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
 
+
+        // Relação 1:N entre Produto e Inventario
+        // Um Produto pode estar presente em vários registros de Inventario 
+        // Essa coleção permite acessar todos os inventários onde o produto aparece.
+        
+        public ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
         
         public static int GerarId(AppDataContext ctx)
         {

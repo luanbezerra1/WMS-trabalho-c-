@@ -85,7 +85,7 @@ namespace Wms.Controllers
                 }
 
                 resultado.Quantidade = inventarioAlterado.Quantidade;
-                resultado.ultimaMovimentacao = inventarioAlterado.ultimaMovimentacao;
+                resultado.UltimaMovimentacao = inventarioAlterado.UltimaMovimentacao;
 
                 ctx.Inventario.Update(resultado);
                 ctx.SaveChanges();
