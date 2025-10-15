@@ -416,3 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# SQLite (banco local)
+*.db
+*.db-wal
+*.db-shm
+
+# macOS
+.DS_Store
