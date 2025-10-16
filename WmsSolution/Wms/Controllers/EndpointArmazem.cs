@@ -1,97 +1,236 @@
 /**
- * Autor: Cauã Tobias
- * Data de Criação: 14/10/2025
- * Descrição: Endpoints responsáveis pelo gerenciamento de Armazéns (CRUD)
+ * Autor: Caua
+ * Data de Criação: 15/10/2025
+ * Descrição: Endpoints para CRUD de Armazém
 **/
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
 
-namespace Wms.Endpoints
+namespace Wms.Controllers
 {
-    public static class EndpointsArmazem
+    public static class EndpointArmazem
     {
-        public static void MapArmazemEndpoints(this WebApplication app)
+        public static void MapEndpointsArmazem(this WebApplication app)
         {
-            /**
-             * Autor: Cauã Tobias
-             * Data de Criação: 14/10/2052
-             * Descrição: Endpoint para listar todos os armazéns
-            **/
-            app.MapGet("/api/GetArmazem", ([FromServices] AppDataContext context) =>
+            /*
+
+            Autor: Caua
+            Data de Criação: 15/10/2025
+            Descrição: Endpoints para CRUD de Armazém.
+            Args: ctx(AppDataContext)
+
+            */
+
+            app.MapGet("/api/GetArmazem", ([FromServices] AppDataContext ctx) =>
             {
-                 var armazens = context.Armazem.ToList();
-                 return Results.Ok(armazens);
+                /*
+
+                Autor: Caua
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Get para listar todos os armazéns.
+                Args: ctx(AppDataContext)
+                Return: Results.Ok(ctx.Armazem.ToList()) ou Results.NotFound("Nenhum armazém encontrado!")
+
+                */
+
+                if (ctx.Armazem.Any())
+                {
+                    return Results.Ok(ctx.Armazem.ToList());
+                }
+
+                return Results.NotFound("Nenhum armazém encontrado!");
             });
 
-            /**
-             * Autor: Cauã Tobias
-             * Data de Criação: 14/10/2025
-             * Descrição: Endpoint para buscar um armazém por ID
-            **/
-            app.MapGet("/api/GetArmazemById={id}", ([FromServices] AppDataContext context, int id) =>
+            app.MapGet("/api/GetArmazemById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
             {
-                var armazem = context.Armazem.Find(id);
+                /*
 
-                if (armazem is null)
-                    return Results.NotFound("Armazém não encontrado.");
+                Autor: Caua
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Get para buscar um armazém por ID.
+                Args: id(int), ctx(AppDataContext)
+                Return: Results.Ok(resultado) ou Results.NotFound("Armazém não encontrado!")
 
-                return Results.Ok(armazem);
+                */
+
+                Armazem? resultado = ctx.Armazem.FirstOrDefault(x => x.Id == id);
+
+                if (resultado is null)
+                {
+                    return Results.NotFound("Armazém não encontrado!");
+                }
+
+                return Results.Ok(resultado);
             });
 
-            /**
-             * Autor: Cauã Tobias
-             * Data de Criação: 14/10/2025
-             * Descrição: Endpoint para criar um novo armazém
-            **/
-            app.MapPost("/api/PostArmazem", ([FromServices] AppDataContext context, [FromBody] Armazem armazem) =>
+            app.MapGet("/api/GetArmazemByStatus={status}", ([FromRoute] string status, [FromServices] AppDataContext ctx) =>
             {
-                context.Armazem.Add(armazem);
-                context.SaveChanges();
+                /*
 
-                return Results.Created($"/api/GetArmazemById={armazem.Id}", armazem);
+                Autor: Caua
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Get para buscar armazéns por status.
+                Args: status(string), ctx(AppDataContext)
+                Return: Results.Ok(resultado) ou Results.NotFound("Nenhum armazém encontrado com esse status!")
+
+                */
+
+                var resultado = ctx.Armazem.Where(x => x.status == status).ToList();
+
+                if (!resultado.Any())
+                {
+                    return Results.NotFound("Nenhum armazém encontrado com esse status!");
+                }
+
+                return Results.Ok(resultado);
             });
 
-            /**
-             * Autor: Cauã Tobias
-             * Data de Criação: 14/10/2025
-             * Descrição: Endpoint para atualizar um armazém existente
-            **/
-            app.MapPut("/api/PutArmazem/{id}", ([FromServices] AppDataContext context, int id, [FromBody] Armazem armazemAtualizado) =>
+            app.MapPost("/api/PostArmazem", ([FromBody] Armazem armazem, [FromServices] AppDataContext ctx) =>
             {
-                var armazem = context.Armazem.Find(id);
+                /*
 
-                if (armazem is null)
-                    return Results.NotFound("Armazém não encontrado.");
+                Autor: Caua
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Post para cadastrar um armazém.
+                Args: armazem(Armazem), ctx(AppDataContext)
+                Return: Results.Created("", novoArmazem) ou Results.Conflict("Esse armazém já existe!")
 
-                armazem.nomeArmazem = armazemAtualizado.nomeArmazem;
-                armazem.status = armazemAtualizado.status;
-                armazem.Posicoes = armazemAtualizado.Posicoes;
-                armazem.ProdutoPosicao = armazemAtualizado.ProdutoPosicao;
-                armazem.Capacidade = armazemAtualizado.Capacidade;
-                armazem.EnderecoId = armazemAtualizado.EnderecoId;
+                */
 
-                context.SaveChanges();
+                if (armazem.Id != 0)
+                {
+                    Armazem? resultado = ctx.Armazem.FirstOrDefault(x => x.Id == armazem.Id);
 
-                return Results.Ok(armazem);
+                    if (resultado is not null)
+                    {
+                        return Results.Conflict("Esse armazém já existe!");
+                    }
+                }
+
+                // nomeArmazem (validação)
+                if (string.IsNullOrEmpty(armazem.nomeArmazem))
+                {
+                    return Results.BadRequest("Nome do armazém deve ser informado!");
+                }
+
+                // enderecoId (validação)
+                if (armazem.EnderecoId > 0)
+                {
+                    Endereco? enderecoExistente = ctx.Endereco.Find(armazem.EnderecoId);
+                    if (enderecoExistente is null)
+                    {
+                        return Results.NotFound($"Endereço com ID {armazem.EnderecoId} não encontrado!");
+                    }
+                }
+
+                // posicoes (validação)
+                if (armazem.Posicoes <= 0)
+                {
+                    return Results.BadRequest("Número de posições deve ser maior que zero!");
+                }
+
+                // produtoPosicao (validação)
+                if (armazem.ProdutoPosicao <= 0)
+                {
+                    return Results.BadRequest("Número de produtos por posição deve ser maior que zero!");
+                }
+                
+                Armazem novoArmazem = Armazem.Criar(armazem.nomeArmazem, armazem.status, armazem.Posicoes, armazem.ProdutoPosicao, armazem.EnderecoId);
+                novoArmazem.Id = Armazem.GerarId(ctx);
+                
+                ctx.Armazem.Add(novoArmazem);
+                ctx.SaveChanges();
+
+                // Criar posições
+                for (int i = 1; i <= novoArmazem.Posicoes; i++)
+                {
+                    string nomePosicao = $"P{novoArmazem.Id:D3}{i:D3}";
+                    Inventario posicao = Inventario.CriarPosicaoVazia(novoArmazem.Id, nomePosicao);
+                    ctx.Inventario.Add(posicao);
+                }
+                ctx.SaveChanges();
+
+                return Results.Created("", novoArmazem);
             });
 
-            /**
-             * Autor: Cauã Tobias
-             * Data de Criação: 14/10/2025
-             * Descrição: Endpoint para excluir um armazém
-            **/
-            app.MapDelete("/api/DeleteArmazem/{id}", ([FromServices] AppDataContext context, int id) =>
+            app.MapDelete("/api/DeleteArmazem={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
             {
-                var armazem = context.Armazem.Find(id);
+                /*
 
-                if (armazem is null)
-                    return Results.NotFound("Armazém não encontrado.");
+                Autor: Caua
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Delete para deletar um armazém.
+                Args: id(int), ctx(AppDataContext)
+                Return: Results.Ok(resultado) ou Results.NotFound("Armazém não encontrado!")
 
-                context.Armazem.Remove(armazem);
-                context.SaveChanges();
+                */
 
-                return Results.Ok("Armazém removido com sucesso.");
+                Armazem? resultado = ctx.Armazem.Find(id);
+
+                if (resultado is null)
+                {
+                    return Results.NotFound("Armazém não encontrado!");
+                }
+                
+                Armazem.Deletar(ctx, id);
+
+                return Results.Ok(resultado);
+            });
+
+            app.MapPut("/api/PutArmazem={id}", ([FromRoute] int id, [FromBody] Armazem armazemAlterado, [FromServices] AppDataContext ctx) =>
+            {
+                /*
+
+                Autor: Caua
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Put para alterar um armazém.
+                Args: id(int), armazemAlterado(Armazem), ctx(AppDataContext)
+                Return: Results.Ok(resultado) ou Results.NotFound("Armazém não encontrado!")
+
+                */
+
+                Armazem? resultado = ctx.Armazem.Find(id);
+
+                if (resultado is null)
+                {
+                    return Results.NotFound("Armazém não encontrado!");
+                }
+
+                // nomeArmazem (validação)
+                if (string.IsNullOrEmpty(armazemAlterado.nomeArmazem))
+                {
+                    return Results.BadRequest("Nome do armazém deve ser informado!");
+                }
+
+                // enderecoId (validação)
+                if (armazemAlterado.EnderecoId > 0)
+                {
+                    Endereco? enderecoExistente = ctx.Endereco.Find(armazemAlterado.EnderecoId);
+                    if (enderecoExistente is null)
+                    {
+                        return Results.NotFound($"Endereço com ID {armazemAlterado.EnderecoId} não encontrado!");
+                    }
+                }
+
+                // posicoes (validação)
+                if (armazemAlterado.Posicoes <= 0)
+                {
+                    return Results.BadRequest("Número de posições deve ser maior que zero!");
+                }
+
+                // produtoPosicao (validação)
+                if (armazemAlterado.ProdutoPosicao <= 0)
+                {
+                    return Results.BadRequest("Número de produtos por posição deve ser maior que zero!");
+                }
+                
+                resultado.Alterar(armazemAlterado.nomeArmazem, armazemAlterado.status, armazemAlterado.Posicoes, armazemAlterado.ProdutoPosicao, armazemAlterado.EnderecoId);
+
+                ctx.Armazem.Update(resultado);
+                ctx.SaveChanges();
+                
+                return Results.Ok(resultado);
             });
         }
     }

@@ -1,0 +1,24 @@
+### GET - Listar todos os inventários
+GET http://localhost:5209/api/GetInventario
+Content-Type: application/json
+
+### PUT - Alocar produto de teste em posição vazia
+PUT http://localhost:5209/api/AlocarProduto=1
+Content-Type: application/json
+
+{
+  "produtoId": 1,
+  "quantidade": 100
+}
+
+### PUT - Atualizar quantidade da posição
+PUT http://localhost:5209/api/AtualizarQuantidade=1
+Content-Type: application/json
+
+{
+  "quantidade": 200
+}
+
+### PUT - Remover produto da posição (deixa vazia)
+PUT http://localhost:5209/api/RemoverProduto=1
+Content-Type: application/json

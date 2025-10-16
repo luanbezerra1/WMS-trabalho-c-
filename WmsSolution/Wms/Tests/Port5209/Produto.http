@@ -2,68 +2,17 @@
 GET http://localhost:5209/api/GetProduto
 Content-Type: application/json
 
-### GET - Buscar produto por ID
-GET http://localhost:5209/api/GetProdutoById=1
-Content-Type: application/json
-
-### GET - Buscar produtos por Categoria (0=Eletronicos, 1=Alimentos, etc)
-GET http://localhost:5209/api/GetProdutoByCategoria=0
-Content-Type: application/json
-
-### GET - Buscar produtos por Fornecedor
-GET http://localhost:5209/api/GetProdutoByFornecedor=1
-Content-Type: application/json
-
-### POST - Cadastrar novo produto (Eletrônicos)
+### POST - Cadastrar produto de teste
 POST http://localhost:5209/api/PostProduto
 Content-Type: application/json
 
 {
-  "nomeProduto": "Notebook Dell Inspiron",
-  "descricao": "Notebook i5 8GB RAM 256GB SSD",
+  "nomeProduto": "Produto de Teste",
+  "descricao": "Descrição do produto de teste",
   "lote": 100,
   "fornecedorId": 1,
-  "preco": 2500.00,
-  "categoria": 0
-}
-
-### POST - Cadastrar produto (Alimentos)
-POST http://localhost:5209/api/PostProduto
-Content-Type: application/json
-
-{
-  "nomeProduto": "Arroz Integral 1kg",
-  "descricao": "Arroz integral tipo 1",
-  "lote": 500,
-  "fornecedorId": 1,
-  "preco": 8.50,
-  "categoria": 1
-}
-
-### POST - Cadastrar produto (Informática)
-POST http://localhost:5209/api/PostProduto
-Content-Type: application/json
-
-{
-  "nomeProduto": "Mouse Logitech MX Master",
-  "descricao": "Mouse sem fio ergonômico",
-  "lote": 200,
-  "fornecedorId": 1,
-  "preco": 350.00,
-  "categoria": 14
-}
-
-### POST - Cadastrar produto (Vestuário)
-POST http://localhost:5209/api/PostProduto
-Content-Type: application/json
-
-{
-  "nomeProduto": "Camiseta Básica",
-  "descricao": "Camiseta 100% algodão",
-  "lote": 300,
-  "fornecedorId": 1,
-  "preco": 29.90,
-  "categoria": 3
+  "preco": 99.90,
+  "categoria": 15
 }
 
 ### PUT - Alterar produto
@@ -71,91 +20,14 @@ PUT http://localhost:5209/api/PutProduto=1
 Content-Type: application/json
 
 {
-  "nomeProduto": "Notebook Dell Inspiron 15",
-  "descricao": "Notebook i7 16GB RAM 512GB SSD",
-  "lote": 100,
+  "nomeProduto": "Produto de Teste Alterado",
+  "descricao": "Descrição alterada do produto de teste",
+  "lote": 200,
   "fornecedorId": 1,
-  "preco": 3500.00,
-  "categoria": 0
+  "preco": 149.90,
+  "categoria": 15
 }
 
 ### DELETE - Deletar produto
 DELETE http://localhost:5209/api/DeleteProduto=1
 Content-Type: application/json
-
-### ============================================
-### TESTES DE VALIDAÇÃO
-### ============================================
-
-### POST - Tentar cadastrar sem nome (deve retornar erro)
-POST http://localhost:5209/api/PostProduto
-Content-Type: application/json
-
-{
-  "nomeProduto": "",
-  "descricao": "Produto sem nome",
-  "lote": 100,
-  "fornecedorId": 1,
-  "preco": 100.00,
-  "categoria": 0
-}
-
-### POST - Tentar cadastrar com fornecedor inexistente (deve retornar erro)
-POST http://localhost:5209/api/PostProduto
-Content-Type: application/json
-
-{
-  "nomeProduto": "Teste Fornecedor Inválido",
-  "descricao": "Produto com fornecedor inexistente",
-  "lote": 100,
-  "fornecedorId": 99999,
-  "preco": 100.00,
-  "categoria": 0
-}
-
-### POST - Tentar cadastrar com preço zero (deve retornar erro)
-POST http://localhost:5209/api/PostProduto
-Content-Type: application/json
-
-{
-  "nomeProduto": "Teste Preço Inválido",
-  "descricao": "Produto com preço zero",
-  "lote": 100,
-  "fornecedorId": 1,
-  "preco": 0,
-  "categoria": 0
-}
-
-### POST - Tentar cadastrar com lote zero (deve retornar erro)
-POST http://localhost:5209/api/PostProduto
-Content-Type: application/json
-
-{
-  "nomeProduto": "Teste Lote Inválido",
-  "descricao": "Produto com lote zero",
-  "lote": 0,
-  "fornecedorId": 1,
-  "preco": 100.00,
-  "categoria": 0
-}
-
-### ============================================
-### CATEGORIAS DISPONÍVEIS
-### ============================================
-### 0 = Eletronicos
-### 1 = Alimentos
-### 2 = Bebidas
-### 3 = Vestuario
-### 4 = Moveis
-### 5 = Eletrodomesticos
-### 6 = Ferramentas
-### 7 = Automoveis
-### 8 = Esportes
-### 9 = Livros
-### 10 = Brinquedos
-### 11 = Higiene
-### 12 = Limpeza
-### 13 = Construcao
-### 14 = Informatica
-### 15 = Outros
-

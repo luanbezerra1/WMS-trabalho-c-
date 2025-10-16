@@ -1,6 +1,6 @@
 /**
  * Autor: Vitor
- * Data de Criação: 13/10/2025
+ * Data de Criação: 15/10/2025
  * Descrição: Endpoints para CRUD de Cliente
 **/
 
@@ -16,7 +16,7 @@ namespace Wms.Controllers
             /*
 
             Autor: Vitor
-            Data de Criação: 13/10/2025
+            Data de Criação: 15/10/2025
             Descrição: Endpoints para CRUD de Cliente.
             Args: ctx(AppDataContext)
 
@@ -27,7 +27,7 @@ namespace Wms.Controllers
                 /*
 
                 Autor: Vitor
-                Data de Criação: 13/10/2025
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Get para listar todos os clientes.
                 Args: ctx(AppDataContext)
                 Return: Results.Ok(ctx.Cliente.ToList()) ou Results.NotFound("Nenhum cliente encontrado!")
@@ -47,7 +47,7 @@ namespace Wms.Controllers
                 /*
 
                 Autor: Vitor
-                Data de Criação: 13/10/2025
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Get para buscar um cliente por ID.
                 Args: id(int), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Cliente não encontrado!")
@@ -69,7 +69,7 @@ namespace Wms.Controllers
                 /*
 
                 Autor: Vitor
-                Data de Criação: 13/10/2025
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Get para buscar um cliente por CPF.
                 Args: cpf(string), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Cliente não encontrado!")
@@ -91,7 +91,7 @@ namespace Wms.Controllers
                 /*
 
                 Autor: Vitor
-                Data de Criação: 13/10/2025
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Post para cadastrar um cliente.
                 Args: cliente(Cliente), ctx(AppDataContext)
                 Return: Results.Created("", novoCliente) ou Results.Conflict("Esse cliente já existe!")
@@ -108,20 +108,20 @@ namespace Wms.Controllers
                     }
                 }
 
-                // Valida se o CPF foi informado
+                // cpf (validação)
                 if (string.IsNullOrEmpty(cliente.Cpf))
                 {
                     return Results.BadRequest("Cliente deve ter CPF informado!");
                 }
 
-                // Valida se CPF já existe
+                // cpf (validação)
                 Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == cliente.Cpf);
                 if (cpfExistente is not null)
                 {
                     return Results.Conflict("Esse CPF já está cadastrado!");
                 }
 
-                // Valida se o endereço existe (caso tenha sido informado)
+                // enderecoId (validação)
                 if (cliente.EnderecoId > 0)
                 {
                     Endereco? enderecoExistente = ctx.Endereco.Find(cliente.EnderecoId);
@@ -145,7 +145,7 @@ namespace Wms.Controllers
                 /*
 
                 Autor: Vitor
-                Data de Criação: 13/10/2025
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Delete para deletar um cliente.
                 Args: id(int), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Cliente não encontrado!")
@@ -169,7 +169,7 @@ namespace Wms.Controllers
                 /*
 
                 Autor: Vitor
-                Data de Criação: 13/10/2025
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Put para alterar um cliente.
                 Args: id(int), clienteAlterado(Cliente), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Cliente não encontrado!")
@@ -183,20 +183,20 @@ namespace Wms.Controllers
                     return Results.NotFound("Cliente não encontrado!");
                 }
 
-                // Valida se o CPF foi informado
+                // cpf (validação)
                 if (string.IsNullOrEmpty(clienteAlterado.Cpf))
                 {
                     return Results.BadRequest("Cliente deve ter CPF informado!");
                 }
 
-                // Valida se CPF já existe (exceto para o próprio cliente)
+                // cpf (validação)
                 Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == clienteAlterado.Cpf && x.Id != id);
                 if (cpfExistente is not null)
                 {
                     return Results.Conflict("Esse CPF já está cadastrado!");
                 }
 
-                // Valida se o endereço existe (caso tenha sido informado)
+                // enderecoId (validação)
                 if (clienteAlterado.EnderecoId > 0)
                 {
                     Endereco? enderecoExistente = ctx.Endereco.Find(clienteAlterado.EnderecoId);

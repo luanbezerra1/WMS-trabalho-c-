@@ -1,6 +1,6 @@
 /**
  * Autor: Vitor
- * Data de Criação: 12/10/2025
+ * Data de Criação: 15/10/2025
  * Descrição: Endpoints para CRUD de Endereço
 **/
 
@@ -15,8 +15,8 @@ namespace Wms.Controllers
         {
             /*
 
-            Autor: Vitor Baraçal Gimarães
-            Data de Criação: 12/10/2025
+            Autor: Vitor
+            Data de Criação: 15/10/2025
             Descrição: Endpoints para CRUD de Endereço.
             Args: ctx(AppDataContext)
 
@@ -26,8 +26,8 @@ namespace Wms.Controllers
             {
                 /*
 
-                Autor: Vitor Baraçal Gimarães
-                Data de Criação: 12/10/2025
+                Autor: Vitor
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Get para listar todos os endereços.
                 Args: ctx(AppDataContext)
                 Return: Results.Ok(ctx.Endereco.ToList()) ou Results.NotFound("Nenhum endereço encontrado!")
@@ -46,8 +46,8 @@ namespace Wms.Controllers
             {
                 /*
 
-                Autor: Vitor Baraçal Gimarães
-                Data de Criação: 12/10/2025
+                Autor: Vitor
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Get para buscar um endereço por ID.
                 Args: id(int), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Endereço não encontrado!")
@@ -68,8 +68,8 @@ namespace Wms.Controllers
             {
                 /*
 
-                Autor: Vitor Baraçal Gimarães
-                Data de Criação: 12/10/2025
+                Autor: Vitor
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Post para cadastrar um endereço.
                 Args: endereco(Endereco), ctx(AppDataContext)
                 Return: Results.Created("", novoEndereco) ou Results.Conflict("Esse endereço já existe!")
@@ -98,8 +98,8 @@ namespace Wms.Controllers
             {
                 /*
 
-                Autor: Vitor Baraçal Gimarães
-                Data de Criação: 12/10/2025
+                Autor: Vitor
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Delete para deletar um endereço.
                 Args: id(int), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Endereço não encontrado!")
@@ -122,8 +122,8 @@ namespace Wms.Controllers
             {
                 /*
 
-                Autor: Vitor Baraçal Gimarães
-                Data de Criação: 12/10/2025
+                Autor: Vitor
+                Data de Criação: 15/10/2025
                 Descrição: Endpoint Put para alterar um endereço.
                 Args: id(int), enderecoAlterado(Endereco), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Endereço não encontrado!")

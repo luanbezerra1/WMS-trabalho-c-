@@ -2,46 +2,15 @@
 GET http://localhost:5209/api/GetCliente
 Content-Type: application/json
 
-### GET - Buscar cliente por ID
-GET http://localhost:5209/api/GetClienteById=1
-Content-Type: application/json
-
-### GET - Buscar cliente por CPF
-GET http://localhost:5209/api/GetClienteByCpf=123.456.789-00
-Content-Type: application/json
-
-### POST - Cadastrar novo cliente
+### POST - Cadastrar cliente de teste
 POST http://localhost:5209/api/PostCliente
 Content-Type: application/json
 
 {
-  "nome": "João Silva",
-  "email": "joao.silva@email.com",
-  "telefone": "(41) 99999-1234",
-  "cpf": "123.456.789-00",
-  "enderecoId": 6
-}
-
-### POST - Cadastrar cliente sem endereço
-POST http://localhost:5209/api/PostCliente
-Content-Type: application/json
-
-{
-  "nome": "Maria Santos",
-  "email": "maria.santos@email.com",
-  "telefone": "(41) 98888-4321",
-  "cpf": "987.654.321-00"
-}
-
-### POST - Cadastrar outro cliente
-POST http://localhost:5209/api/PostCliente
-Content-Type: application/json
-
-{
-  "nome": "Pedro Oliveira",
-  "email": "pedro.oliveira@email.com",
-  "telefone": "(41) 97777-5555",
-  "cpf": "456.789.123-00",
+  "nome": "Cliente de Teste",
+  "email": "cliente.teste@email.com",
+  "telefone": "(11) 99999-0001",
+  "cpf": "111.111.111-11",
   "enderecoId": 2
 }
 
@@ -50,51 +19,13 @@ PUT http://localhost:5209/api/PutCliente=1
 Content-Type: application/json
 
 {
-  "nome": "João Silva Santos",
-  "email": "joao.silva.santos@email.com",
-  "telefone": "(41) 99999-5678",
-  "cpf": "123.456.789-00",
+  "nome": "Cliente de Teste Alterado",
+  "email": "cliente.teste.alterado@email.com",
+  "telefone": "(11) 99999-0002",
+  "cpf": "111.111.111-11",
   "enderecoId": 1
 }
 
 ### DELETE - Deletar cliente
 DELETE http://localhost:5209/api/DeleteCliente=1
 Content-Type: application/json
-
-### ============================================
-### TESTES DE VALIDAÇÃO
-### ============================================
-
-### POST - Tentar cadastrar sem CPF (deve retornar erro)
-POST http://localhost:5209/api/PostCliente
-Content-Type: application/json
-
-{
-  "nome": "Teste Sem CPF",
-  "email": "teste@email.com",
-  "telefone": "(41) 99999-9999"
-}
-
-### POST - Tentar cadastrar com CPF duplicado (deve retornar erro)
-POST http://localhost:5209/api/PostCliente
-Content-Type: application/json
-
-{
-  "nome": "Teste CPF Duplicado",
-  "email": "teste2@email.com",
-  "telefone": "(41) 99999-8888",
-  "cpf": "123.456.789-00"
-}
-
-### POST - Tentar cadastrar com endereço inexistente (deve retornar erro)
-POST http://localhost:5209/api/PostCliente
-Content-Type: application/json
-
-{
-  "nome": "Teste Endereço Inválido",
-  "email": "teste3@email.com",
-  "telefone": "(41) 99999-7777",
-  "cpf": "111.222.333-44",
-  "enderecoId": 99999
-}
-

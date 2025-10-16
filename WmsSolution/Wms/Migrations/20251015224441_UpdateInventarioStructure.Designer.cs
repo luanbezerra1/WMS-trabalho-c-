@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wms.Models;
 
@@ -10,9 +11,11 @@ using Wms.Models;
 namespace Wms.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20251015224441_UpdateInventarioStructure")]
+    partial class UpdateInventarioStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -44,6 +47,8 @@ namespace Wms.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EnderecoId");
 
                     b.ToTable("Armazem");
                 });
@@ -77,6 +82,8 @@ namespace Wms.Migrations
 
                     b.HasIndex("Cpf")
                         .IsUnique();
+
+                    b.HasIndex("EnderecoId");
 
                     b.ToTable("Cliente");
                 });
@@ -139,6 +146,10 @@ namespace Wms.Migrations
 
                     b.HasKey("EntradaId", "ProdutoId");
 
+                    b.HasIndex("FornecedorId");
+
+                    b.HasIndex("ProdutoId");
+
                     b.ToTable("EntradaProduto");
                 });
 
@@ -169,6 +180,8 @@ namespace Wms.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EnderecoId");
+
                     b.HasIndex("cnpj")
                         .IsUnique();
 
@@ -188,6 +201,9 @@ namespace Wms.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("PosicaoID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("ProdutoId")
                         .HasColumnType("INTEGER");
 
@@ -199,7 +215,9 @@ namespace Wms.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArmazemId", "NomePosicao")
+                    b.HasIndex("ProdutoId");
+
+                    b.HasIndex("ArmazemId", "PosicaoID")
                         .IsUnique();
 
                     b.ToTable("Inventario");
@@ -258,6 +276,10 @@ namespace Wms.Migrations
 
                     b.HasKey("SaidaId", "ProdutoId");
 
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("ProdutoId");
+
                     b.ToTable("SaidaProduto");
                 });
 
@@ -286,6 +308,110 @@ namespace Wms.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("Wms.Models.Armazem", b =>
+                {
+                    b.HasOne("Wms.Models.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Endereco");
+                });
+
+            modelBuilder.Entity("Wms.Models.Cliente", b =>
+                {
+                    b.HasOne("Wms.Models.Endereco", "Endereco")
+                        .WithMany("Clientes")
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Endereco");
+                });
+
+            modelBuilder.Entity("Wms.Models.EntradaProduto", b =>
+                {
+                    b.HasOne("Wms.Models.Fornecedor", "Fornecedor")
+                        .WithMany()
+                        .HasForeignKey("FornecedorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Wms.Models.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Fornecedor");
+
+                    b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("Wms.Models.Fornecedor", b =>
+                {
+                    b.HasOne("Wms.Models.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Endereco");
+                });
+
+            modelBuilder.Entity("Wms.Models.Inventario", b =>
+                {
+                    b.HasOne("Wms.Models.Armazem", "Armazem")
+                        .WithMany("Inventarios")
+                        .HasForeignKey("ArmazemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Wms.Models.Produto", "Produto")
+                        .WithMany("Inventarios")
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Armazem");
+
+                    b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("Wms.Models.SaidaProduto", b =>
+                {
+                    b.HasOne("Wms.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Wms.Models.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("Wms.Models.Armazem", b =>
+                {
+                    b.Navigation("Inventarios");
+                });
+
+            modelBuilder.Entity("Wms.Models.Endereco", b =>
+                {
+                    b.Navigation("Clientes");
+                });
+
+            modelBuilder.Entity("Wms.Models.Produto", b =>
+                {
+                    b.Navigation("Inventarios");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,16 +1,35 @@
-### Cadastrar produto
+### GET - Listar todos os endereços
+GET http://localhost:5209/api/GetEndereco
+Content-Type: application/json
+
+### POST - Cadastrar endereço de teste
 POST http://localhost:5209/api/PostEndereco
 Content-Type: application/json
 
 {    
-  "rua": "Rua Teste",
+  "rua": "Rua de Teste",
   "numero": "123",
-  "complemento": "Apto 45",
+  "complemento": "Sala 1",
   "bairro": "Bairro Teste",
   "cidade": "Cidade Teste",
   "estado": "Estado Teste",
-  "cep": "01234-567"
+  "cep": "12345-678"
 }
 
-### Deletar endereço
-DELETE http://localhost:5209/api/DeleteEndereco=5
+### PUT - Alterar endereço
+PUT http://localhost:5209/api/PutEndereco=1
+Content-Type: application/json
+
+{    
+  "rua": "Rua de Teste Alterada",
+  "numero": "456",
+  "complemento": "Sala 2",
+  "bairro": "Bairro Teste 2",
+  "cidade": "Cidade Teste 2",
+  "estado": "Estado Teste 2",
+  "cep": "98765-432"
+}
+
+### DELETE - Deletar endereço
+DELETE http://localhost:5209/api/DeleteEndereco=1
+Content-Type: application/json

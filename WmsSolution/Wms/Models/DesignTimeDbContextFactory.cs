@@ -1,3 +1,9 @@
+/**
+ * Autor: Luan
+ * Data de Criação: 15/10/2025
+ * Descrição: Factory para criação do DbContext em tempo de design
+**/
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -8,6 +14,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDataCon
     public AppDataContext CreateDbContext(string[] args)
     {
         var options = new DbContextOptionsBuilder<AppDataContext>()
+        
             // Use a MESMA connection string do appsettings.json
             .UseSqlite("Data Source=Wms.db")
             .Options;

@@ -1,3 +1,9 @@
+/**
+ * Autor: Luan
+ * Data de Criação: 15/10/2025
+ * Descrição: Modelo de dados para representação de AppDataContext
+**/
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Wms.Models;
@@ -6,8 +12,6 @@ public class AppDataContext : DbContext
 {
     public AppDataContext(DbContextOptions<AppDataContext> options) : base(options) { }
 
-
-    // Tabelas do Banco de Dados
     public DbSet<Produto> Produto { get; set; }
     public DbSet<Armazem> Armazem { get; set; }
     public DbSet<Usuario> Usuario { get; set; }
@@ -22,90 +26,63 @@ public class AppDataContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // INVENTARIO — PK composta (Armazem + Produto)
-        
-       modelBuilder.Entity<Inventario>()
-        .HasKey(i => new { i.ArmazemId, i.ProdutoId }); // PK composta
+        // INVENTARIO - Ignorar navegações
+        modelBuilder.Entity<Inventario>()
+            .Ignore(i => i.Armazem)
+            .Ignore(i => i.Produto);
 
-    modelBuilder.Entity<Inventario>()
-        .HasOne(i => i.Armazem)
-        .WithMany(a => a.Inventarios)
-        .HasForeignKey(i => i.ArmazemId)
-        .OnDelete(DeleteBehavior.Restrict);
+        // ARMAZEM - Ignorar navegações
+        modelBuilder.Entity<Armazem>()
+            .Ignore(a => a.Inventarios)
+            .Ignore(a => a.Endereco);
 
-    modelBuilder.Entity<Inventario>()
-        .HasOne(i => i.Produto)
-        .WithMany(p => p.Inventarios)
-        .HasForeignKey(i => i.ProdutoId)
-        .OnDelete(DeleteBehavior.Restrict);
+        // PRODUTO - Ignorar navegações
+        modelBuilder.Entity<Produto>()
+            .Ignore(p => p.Inventarios);
 
-    // Opcional: índice para consultas por posição
-    modelBuilder.Entity<Inventario>()
-        .HasIndex(i => i.PosicaoID);
-
-    // ------------------------------------------------------
-        // CLIENTE -> ENDERECO (FK obrigatória)
-
+        // CLIENTE - Ignorar navegações
         modelBuilder.Entity<Cliente>()
-            .HasOne(c => c.Endereco)
-            .WithMany(e => e.Clientes)
-            .HasForeignKey(c => c.EnderecoId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .Ignore(c => c.Endereco);
 
-        // CPF único
+        // FORNECEDOR - Ignorar navegações
+        modelBuilder.Entity<Fornecedor>()
+            .Ignore(f => f.Endereco);
+
+        // ENDERECO - Ignorar navegações
+        modelBuilder.Entity<Endereco>()
+            .Ignore(e => e.Clientes);
+
+        // ENTRADA_PRODUTO - Ignorar navegações
+        modelBuilder.Entity<EntradaProduto>()
+            .Ignore(e => e.Fornecedor)
+            .Ignore(e => e.Produto);
+
+        // SAIDA_PRODUTO - Ignorar navegações
+        modelBuilder.Entity<SaidaProduto>()
+            .Ignore(s => s.Cliente)
+            .Ignore(s => s.Produto);
+
+        // INVENTARIO - Índice único: nome da posição deve ser único por armazém
+        modelBuilder.Entity<Inventario>()
+            .HasIndex(i => new { i.ArmazemId, i.NomePosicao })
+            .IsUnique();
+
+        // CLIENTE - CPF único
         modelBuilder.Entity<Cliente>()
             .HasIndex(c => c.Cpf)
             .IsUnique();
 
-    // ------------------------------------------------------
-        // FORNECEDOR -> ENDERECO 
-
-        modelBuilder.Entity<Fornecedor>()
-            .HasOne(f => f.Endereco)
-            .WithMany()
-            .HasForeignKey(f => f.EnderecoId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        // CNPJ único 
+        // FORNECEDOR - CNPJ único
         modelBuilder.Entity<Fornecedor>()
             .HasIndex(f => f.cnpj)
             .IsUnique();
-            
-    // ------------------------------------------------------
 
-        // CONTROLE_ENTRADA — PK composta + relacionamentos
-
+        // CONTROLE_ENTRADA - PK composta
         modelBuilder.Entity<EntradaProduto>()
             .HasKey(e => new { e.EntradaId, e.ProdutoId });
 
-        modelBuilder.Entity<EntradaProduto>()
-            .HasOne(e => e.Fornecedor)
-            .WithMany()
-            .HasForeignKey(e => e.FornecedorId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<EntradaProduto>()
-            .HasOne(e => e.Produto)
-            .WithMany()
-            .HasForeignKey(e => e.ProdutoId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-
-        // CONTROLE_SAÍDA — PK composta + relacionamentos
-        
+        // CONTROLE_SAÍDA - PK composta
         modelBuilder.Entity<SaidaProduto>()
             .HasKey(s => new { s.SaidaId, s.ProdutoId });
-
-        modelBuilder.Entity<SaidaProduto>()
-            .HasOne(s => s.Cliente)
-            .WithMany()
-            .HasForeignKey(s => s.ClienteId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<SaidaProduto>()
-            .HasOne(s => s.Produto)
-            .WithMany()
-            .HasForeignKey(s => s.ProdutoId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

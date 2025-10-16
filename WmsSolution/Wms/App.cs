@@ -1,5 +1,5 @@
 /**
- * Autor: Vitor
+ * Autor: Vitor, Caua, Luan
  * Data de Criação: 08/10/2025
  * Descrição: Arquivo principal da aplicação WMS
 **/
@@ -14,7 +14,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ▶ API + Swagger
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
+// Configurar JSON para Minimal API (endpoints)
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -48,5 +59,11 @@ app.MapEndpointsProduto();
 
 // ▶ Registra os endpoints de Usuário
 app.MapEndpointsUsuario();
+
+// ▶ Registra os endpoints de Armazém
+app.MapEndpointsArmazem();
+
+// ▶ Registra os endpoints de Inventário
+app.MapEndpointsInventario();
 
 app.Run();
