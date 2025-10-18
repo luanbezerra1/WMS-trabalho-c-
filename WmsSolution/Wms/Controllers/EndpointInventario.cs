@@ -28,15 +28,30 @@ namespace Wms.Controllers
 
                 Autor: Caua
                 Data de Criação: 15/10/2025
-                Descrição: Endpoint Get para listar todos os inventários.
+                Descrição: Endpoint Get para listar todos os inventários com nome do produto.
                 Args: ctx(AppDataContext)
-                Return: Results.Ok(ctx.Inventario.ToList()) ou Results.NotFound("Nenhum inventário encontrado!")
+                Return: Results.Ok(inventarios) ou Results.NotFound("Nenhum inventário encontrado!")
 
                 */
 
                 if (ctx.Inventario.Any())
                 {
-                    return Results.Ok(ctx.Inventario.ToList());
+                    var inventarios = ctx.Inventario
+                        .Select(i => new
+                        {
+                            i.Id,
+                            i.ArmazemId,
+                            i.NomePosicao,
+                            i.ProdutoId,
+                            NomeProduto = i.ProdutoId != null 
+                                ? ctx.Produto.Where(p => p.Id == i.ProdutoId).Select(p => p.nomeProduto).FirstOrDefault()
+                                : null,
+                            i.Quantidade,
+                            i.UltimaMovimentacao
+                        })
+                        .ToList();
+
+                    return Results.Ok(inventarios);
                 }
 
                 return Results.NotFound("Nenhum inventário encontrado!");
@@ -48,13 +63,27 @@ namespace Wms.Controllers
 
                 Autor: Caua
                 Data de Criação: 15/10/2025
-                Descrição: Endpoint Get para buscar um inventário por ID.
+                Descrição: Endpoint Get para buscar um inventário por ID com nome do produto.
                 Args: id(int), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Inventário não encontrado!")
 
                 */
 
-                Inventario? resultado = ctx.Inventario.FirstOrDefault(x => x.Id == id);
+                var resultado = ctx.Inventario
+                    .Where(x => x.Id == id)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.ArmazemId,
+                        i.NomePosicao,
+                        i.ProdutoId,
+                        NomeProduto = i.ProdutoId != null 
+                            ? ctx.Produto.Where(p => p.Id == i.ProdutoId).Select(p => p.nomeProduto).FirstOrDefault()
+                            : null,
+                        i.Quantidade,
+                        i.UltimaMovimentacao
+                    })
+                    .FirstOrDefault();
 
                 if (resultado is null)
                 {
@@ -70,13 +99,27 @@ namespace Wms.Controllers
 
                 Autor: Caua
                 Data de Criação: 15/10/2025
-                Descrição: Endpoint Get para buscar todos os inventários de um armazém.
+                Descrição: Endpoint Get para buscar todos os inventários de um armazém com nome do produto.
                 Args: armazemId(int), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Nenhum inventário encontrado para esse armazém!")
 
                 */
 
-                var resultado = ctx.Inventario.Where(x => x.ArmazemId == armazemId).ToList();
+                var resultado = ctx.Inventario
+                    .Where(x => x.ArmazemId == armazemId)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.ArmazemId,
+                        i.NomePosicao,
+                        i.ProdutoId,
+                        NomeProduto = i.ProdutoId != null 
+                            ? ctx.Produto.Where(p => p.Id == i.ProdutoId).Select(p => p.nomeProduto).FirstOrDefault()
+                            : null,
+                        i.Quantidade,
+                        i.UltimaMovimentacao
+                    })
+                    .ToList();
 
                 if (!resultado.Any())
                 {
@@ -92,13 +135,25 @@ namespace Wms.Controllers
 
                 Autor: Caua
                 Data de Criação: 15/10/2025
-                Descrição: Endpoint Get para buscar todos os inventários de um produto.
+                Descrição: Endpoint Get para buscar todos os inventários de um produto com nome do produto.
                 Args: produtoId(int), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Nenhum inventário encontrado para esse produto!")
 
                 */
 
-                var resultado = ctx.Inventario.Where(x => x.ProdutoId == produtoId).ToList();
+                var resultado = ctx.Inventario
+                    .Where(x => x.ProdutoId == produtoId)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.ArmazemId,
+                        i.NomePosicao,
+                        i.ProdutoId,
+                        NomeProduto = ctx.Produto.Where(p => p.Id == i.ProdutoId).Select(p => p.nomeProduto).FirstOrDefault(),
+                        i.Quantidade,
+                        i.UltimaMovimentacao
+                    })
+                    .ToList();
 
                 if (!resultado.Any())
                 {
@@ -120,7 +175,19 @@ namespace Wms.Controllers
 
                 */
 
-                var resultado = ctx.Inventario.Where(x => x.ArmazemId == armazemId && x.ProdutoId == null).ToList();
+                var resultado = ctx.Inventario
+                    .Where(x => x.ArmazemId == armazemId && x.ProdutoId == null)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.ArmazemId,
+                        i.NomePosicao,
+                        i.ProdutoId,
+                        NomeProduto = (string?)null,
+                        i.Quantidade,
+                        i.UltimaMovimentacao
+                    })
+                    .ToList();
 
                 if (!resultado.Any())
                 {

@@ -66,4 +66,7 @@ app.MapEndpointsArmazem();
 // ▶ Registra os endpoints de Inventário
 app.MapEndpointsInventario();
 
+// ▶ Registra os endpoints de Entrada de Produto
+app.MapEndpointsEntradaProduto();
+
 app.Run();

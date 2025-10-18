@@ -1,31 +1,42 @@
-### GET - Listar todos os armazéns
-GET http://localhost:5209/api/GetArmazem
-Content-Type: application/json
+###############################################################################
+#                           ENDPOINTS - ARMAZÉM
+###############################################################################
+# IMPORTANTE: Ao criar um armazém, as posições são criadas automaticamente!
+# Posições = quantidade de espaços no armazém
+# ProdutoPosicao = quantidade máxima de produtos por posição
 
-### POST - Cadastrar armazém de teste
+### Listar Todos
+GET http://localhost:5209/api/GetArmazem
+
+### Buscar por ID
+GET http://localhost:5209/api/GetArmazemById=1
+
+### Buscar por Status
+GET http://localhost:5209/api/GetArmazemByStatus=Ativo
+
+### Criar Novo (precisa de endereçoId - cria posições automaticamente)
 POST http://localhost:5209/api/PostArmazem
 Content-Type: application/json
 
 {
-  "nomeArmazem": "Armazém de Teste",
+  "nomeArmazem": "Armazém Central",
   "status": "Ativo",
-  "posicoes": 10,
-  "produtoPosicao": 5,
-  "enderecoId": 2
+  "posicoes": 20,
+  "produtoPosicao": 150,
+  "enderecoId": 1
 }
 
-### PUT - Alterar armazém
+### Atualizar
 PUT http://localhost:5209/api/PutArmazem=1
 Content-Type: application/json
 
 {
-  "nomeArmazem": "Armazém de Teste Alterado",
+  "nomeArmazem": "Armazém Central - Atualizado",
   "status": "Ativo",
-  "posicoes": 20,
-  "produtoPosicao": 100,
+  "posicoes": 25,
+  "produtoPosicao": 200,
   "enderecoId": 1
 }
 
-### DELETE - Deletar armazém
+### Deletar (deleta o armazém e todas as suas posições)
 DELETE http://localhost:5209/api/DeleteArmazem=1
-Content-Type: application/json

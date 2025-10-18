@@ -15,7 +15,7 @@ namespace Wms.Models
         public int? ProdutoId { get; set; }
         public Produto? Produto { get; set; }
         public int Quantidade { get; set; }
-        public DateTime UltimaMovimentacao { get; set; } = DateTime.UtcNow;
+        public DateTime UltimaMovimentacao { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
         public static Inventario CriarPosicaoVazia(int armazemId, string nomePosicao)
         {
@@ -35,7 +35,7 @@ namespace Wms.Models
                 NomePosicao = nomePosicao,
                 ProdutoId = null,
                 Quantidade = 0,
-                UltimaMovimentacao = DateTime.UtcNow
+                UltimaMovimentacao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"))
             };
         }
 
@@ -57,7 +57,7 @@ namespace Wms.Models
                 NomePosicao = nomePosicao,
                 ProdutoId = produtoId,
                 Quantidade = quantidade,
-                UltimaMovimentacao = DateTime.UtcNow
+                UltimaMovimentacao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"))
             };
         }
 
@@ -75,7 +75,7 @@ namespace Wms.Models
 
             this.ProdutoId = produtoId;
             this.Quantidade = quantidade;
-            this.UltimaMovimentacao = DateTime.UtcNow;
+            this.UltimaMovimentacao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
         }
 
         public void AtualizarQuantidade(int quantidade)
@@ -91,7 +91,7 @@ namespace Wms.Models
             */
 
             this.Quantidade = quantidade;
-            this.UltimaMovimentacao = DateTime.UtcNow;
+            this.UltimaMovimentacao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
         }
 
         public void RemoverProduto()
@@ -108,7 +108,7 @@ namespace Wms.Models
 
             this.ProdutoId = null;
             this.Quantidade = 0;
-            this.UltimaMovimentacao = DateTime.UtcNow;
+            this.UltimaMovimentacao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
         }
 
         public static void Deletar(AppDataContext ctx, int id)

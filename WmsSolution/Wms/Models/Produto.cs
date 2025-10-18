@@ -15,7 +15,7 @@ namespace Wms.Models
         public int fornecedorId { get; set; }
         public double preco { get; set; }
         public Categorias Categoria { get; set; }
-        public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+        public DateTime CriadoEm { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
 
         // Relação 1:N entre Produto e Inventario
@@ -64,7 +64,7 @@ namespace Wms.Models
                 fornecedorId = fornecedorId,
                 preco = preco,
                 Categoria = categoria,
-                CriadoEm = DateTime.UtcNow
+                CriadoEm = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"))
             };
         }
 

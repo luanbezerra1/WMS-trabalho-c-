@@ -1,33 +1,47 @@
-### GET - Listar todos os produtos
-GET http://localhost:5209/api/GetProduto
-Content-Type: application/json
+###############################################################################
+#                           ENDPOINTS - PRODUTO
+###############################################################################
+# Categorias: 0=Eletronicos, 1=Alimentos, 2=Bebidas, 3=Vestuario, 4=Moveis
+# 5=Eletrodomesticos, 6=Ferramentas, 7=Automoveis, 8=Esportes, 9=Livros
+# 10=Brinquedos, 11=Higiene, 12=Limpeza, 13=Construcao, 14=Informatica, 15=Outros
 
-### POST - Cadastrar produto de teste
+### Listar Todos
+GET http://localhost:5209/api/GetProduto
+
+### Buscar por ID
+GET http://localhost:5209/api/GetProdutoById=1
+
+### Buscar por Categoria (Eletrônicos)
+GET http://localhost:5209/api/GetProdutoByCategoria=0
+
+### Buscar por Fornecedor
+GET http://localhost:5209/api/GetProdutoByFornecedor=1
+
+### Criar Novo (precisa de fornecedorId)
 POST http://localhost:5209/api/PostProduto
 Content-Type: application/json
 
 {
-  "nomeProduto": "Produto de Teste",
-  "descricao": "Descrição do produto de teste",
-  "lote": 100,
+  "nomeProduto": "Notebook Gamer",
+  "descricao": "Intel Core i7, 16GB RAM, RTX 3060",
+  "lote": 50,
   "fornecedorId": 1,
-  "preco": 99.90,
-  "categoria": 15
+  "preco": 5499.90,
+  "categoria": 0
 }
 
-### PUT - Alterar produto
+### Atualizar
 PUT http://localhost:5209/api/PutProduto=1
 Content-Type: application/json
 
 {
-  "nomeProduto": "Produto de Teste Alterado",
-  "descricao": "Descrição alterada do produto de teste",
-  "lote": 200,
+  "nomeProduto": "Notebook Gamer Pro",
+  "descricao": "Intel Core i9, 32GB RAM, RTX 4070",
+  "lote": 75,
   "fornecedorId": 1,
-  "preco": 149.90,
-  "categoria": 15
+  "preco": 7999.90,
+  "categoria": 0
 }
 
-### DELETE - Deletar produto
+### Deletar
 DELETE http://localhost:5209/api/DeleteProduto=1
-Content-Type: application/json

@@ -1,31 +1,39 @@
-### GET - Listar todos os clientes
-GET http://localhost:5209/api/GetCliente
-Content-Type: application/json
+###############################################################################
+#                           ENDPOINTS - CLIENTE
+###############################################################################
 
-### POST - Cadastrar cliente de teste
+### Listar Todos
+GET http://localhost:5209/api/GetCliente
+
+### Buscar por ID
+GET http://localhost:5209/api/GetClienteById=1
+
+### Buscar por CPF
+GET http://localhost:5209/api/GetClienteByCpf=123.456.789-00
+
+### Criar Novo (precisa de endereçoId)
 POST http://localhost:5209/api/PostCliente
 Content-Type: application/json
 
 {
-  "nome": "Cliente de Teste",
-  "email": "cliente.teste@email.com",
-  "telefone": "(11) 99999-0001",
-  "cpf": "111.111.111-11",
-  "enderecoId": 2
+  "nome": "João Silva Santos",
+  "email": "joao.silva@email.com",
+  "telefone": "(11) 98765-4321",
+  "cpf": "123.456.789-00",
+  "enderecoId": 1
 }
 
-### PUT - Alterar cliente
+### Atualizar
 PUT http://localhost:5209/api/PutCliente=1
 Content-Type: application/json
 
 {
-  "nome": "Cliente de Teste Alterado",
-  "email": "cliente.teste.alterado@email.com",
-  "telefone": "(11) 99999-0002",
-  "cpf": "111.111.111-11",
+  "nome": "João Silva Santos Junior",
+  "email": "joao.junior@email.com",
+  "telefone": "(11) 98765-9999",
+  "cpf": "123.456.789-00",
   "enderecoId": 1
 }
 
-### DELETE - Deletar cliente
+### Deletar
 DELETE http://localhost:5209/api/DeleteCliente=1
-Content-Type: application/json

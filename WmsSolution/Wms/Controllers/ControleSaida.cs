@@ -14,6 +14,6 @@ namespace Wms.Models
         public int ProdutoId { get; set; }
         public Produto? Produto { get; set; }
         public int QuantidadeRetirada { get; set; }
-        public DateTime DataSaida { get; set; } = DateTime.UtcNow;  
+        public DateTime DataSaida { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));  
     }
 }

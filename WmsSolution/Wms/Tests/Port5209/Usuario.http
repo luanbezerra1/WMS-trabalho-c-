@@ -1,29 +1,37 @@
-### GET - Listar todos os usuários
-GET http://localhost:5209/api/GetUsuario
-Content-Type: application/json
+###############################################################################
+#                           ENDPOINTS - USUÁRIO
+###############################################################################
 
-### POST - Cadastrar usuário de teste
+### Listar Todos
+GET http://localhost:5209/api/GetUsuario
+
+### Buscar por ID
+GET http://localhost:5209/api/GetUsuarioById=1
+
+### Buscar por Login
+GET http://localhost:5209/api/GetUsuarioByLogin=admin
+
+### Criar Novo
 POST http://localhost:5209/api/PostUsuario
 Content-Type: application/json
 
 {
-  "nome": "Usuario de Teste",
-  "login": "usuario.teste",
-  "senha": "senha123",
-  "cargo": "Operador"
+  "nome": "Administrador do Sistema",
+  "login": "admin",
+  "senha": "admin123",
+  "cargo": "Administrador"
 }
 
-### PUT - Alterar usuário
+### Atualizar
 PUT http://localhost:5209/api/PutUsuario=1
 Content-Type: application/json
 
 {
-  "nome": "Usuario de Teste Alterado",
-  "login": "usuario.teste",
-  "senha": "senha456",
-  "cargo": "Gerente"
+  "nome": "Super Administrador",
+  "login": "admin",
+  "senha": "superadmin456",
+  "cargo": "Super Administrador"
 }
 
-### DELETE - Deletar usuário
+### Deletar
 DELETE http://localhost:5209/api/DeleteUsuario=1
-Content-Type: application/json

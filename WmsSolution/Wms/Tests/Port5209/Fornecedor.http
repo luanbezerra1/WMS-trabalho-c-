@@ -1,31 +1,39 @@
-### GET - Listar todos os fornecedores
-GET http://localhost:5209/api/GetFornecedor
-Content-Type: application/json
+###############################################################################
+#                         ENDPOINTS - FORNECEDOR
+###############################################################################
 
-### POST - Cadastrar fornecedor de teste
+### Listar Todos
+GET http://localhost:5209/api/GetFornecedor
+
+### Buscar por ID
+GET http://localhost:5209/api/GetFornecedorById=1
+
+### Buscar por CNPJ
+GET http://localhost:5209/api/GetFornecedorByCnpj=12.345.678/0001-90
+
+### Criar Novo (precisa de endereçoId)
 POST http://localhost:5209/api/PostFornecedor
 Content-Type: application/json
 
 {
-  "nome": "Fornecedor de Teste Ltda",
-  "email": "fornecedor.teste@empresa.com",
-  "telefone": "(11) 3333-0001",
-  "cnpj": "11.111.111/0001-11",
-  "enderecoId": 2
+  "nome": "Tech Distribuidor Ltda",
+  "email": "contato@techdist.com.br",
+  "telefone": "(11) 3344-5566",
+  "cnpj": "12.345.678/0001-90",
+  "enderecoId": 1
 }
 
-### PUT - Alterar fornecedor
+### Atualizar
 PUT http://localhost:5209/api/PutFornecedor=1
 Content-Type: application/json
 
 {
-  "nome": "Fornecedor de Teste Alterado Ltda",
-  "email": "fornecedor.teste.alterado@empresa.com",
-  "telefone": "(11) 3333-0002",
-  "cnpj": "11.111.111/0001-11",
+  "nome": "Tech Distribuidor Nacional Ltda",
+  "email": "vendas@techdist.com.br",
+  "telefone": "(11) 3344-7788",
+  "cnpj": "12.345.678/0001-90",
   "enderecoId": 1
 }
 
-### DELETE - Deletar fornecedor
+### Deletar
 DELETE http://localhost:5209/api/DeleteFornecedor=1
-Content-Type: application/json

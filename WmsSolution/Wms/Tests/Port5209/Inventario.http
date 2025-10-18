@@ -1,24 +1,44 @@
-### GET - Listar todos os inventários
-GET http://localhost:5209/api/GetInventario
-Content-Type: application/json
+###############################################################################
+#                         ENDPOINTS - INVENTÁRIO
+###############################################################################
+# IMPORTANTE: O inventário (posições) é criado automaticamente ao criar um armazém
+# Cada posição pode ter apenas UM tipo de produto
+# A quantidade máxima por posição é definida em ProdutoPosicao do armazém
 
-### PUT - Alocar produto de teste em posição vazia
+### Listar TODO o Inventário (retorna com nome do produto)
+GET http://localhost:5209/api/GetInventario
+
+### Buscar Posição por ID
+GET http://localhost:5209/api/GetInventarioById=1
+
+### Listar Inventário de um Armazém Específico
+GET http://localhost:5209/api/GetInventarioByArmazem=1
+
+### Buscar Onde Está um Produto Específico
+GET http://localhost:5209/api/GetInventarioByProduto=1
+
+### Listar Apenas Posições Vazias de um Armazém
+GET http://localhost:5209/api/GetPosicoesVazias=1
+
+### Alocar Produto em Posição Vazia (primeira vez)
 PUT http://localhost:5209/api/AlocarProduto=1
 Content-Type: application/json
 
 {
   "produtoId": 1,
-  "quantidade": 100
+  "quantidade": 50
 }
 
-### PUT - Atualizar quantidade da posição
+### Atualizar Quantidade (somar ou reduzir)
 PUT http://localhost:5209/api/AtualizarQuantidade=1
 Content-Type: application/json
 
 {
-  "quantidade": 200
+  "quantidade": 75
 }
 
-### PUT - Remover produto da posição (deixa vazia)
+### Remover Produto da Posição (deixa vazia novamente)
 PUT http://localhost:5209/api/RemoverProduto=1
-Content-Type: application/json
+
+### Deletar Posição (cuidado!)
+DELETE http://localhost:5209/api/DeleteInventario=1

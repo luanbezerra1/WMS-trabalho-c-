@@ -1,35 +1,40 @@
-### GET - Listar todos os endereços
-GET http://localhost:5209/api/GetEndereco
-Content-Type: application/json
+###############################################################################
+#                           ENDPOINTS - ENDEREÇO
+###############################################################################
 
-### POST - Cadastrar endereço de teste
+### Listar Todos
+GET http://localhost:5209/api/GetEndereco
+
+### Buscar por ID
+GET http://localhost:5209/api/GetEnderecoById=1
+
+### Criar Novo
 POST http://localhost:5209/api/PostEndereco
 Content-Type: application/json
 
 {    
-  "rua": "Rua de Teste",
-  "numero": "123",
-  "complemento": "Sala 1",
-  "bairro": "Bairro Teste",
-  "cidade": "Cidade Teste",
-  "estado": "Estado Teste",
-  "cep": "12345-678"
+  "rua": "Av. Paulista",
+  "numero": "1000",
+  "complemento": "Conjunto 101",
+  "bairro": "Bela Vista",
+  "cidade": "São Paulo",
+  "estado": "SP",
+  "cep": "01310-100"
 }
 
-### PUT - Alterar endereço
+### Atualizar
 PUT http://localhost:5209/api/PutEndereco=1
 Content-Type: application/json
 
 {    
-  "rua": "Rua de Teste Alterada",
-  "numero": "456",
-  "complemento": "Sala 2",
-  "bairro": "Bairro Teste 2",
-  "cidade": "Cidade Teste 2",
-  "estado": "Estado Teste 2",
-  "cep": "98765-432"
+  "rua": "Av. Paulista",
+  "numero": "2000",
+  "complemento": "Andar 10",
+  "bairro": "Bela Vista",
+  "cidade": "São Paulo",
+  "estado": "SP",
+  "cep": "01310-200"
 }
 
-### DELETE - Deletar endereço
+### Deletar
 DELETE http://localhost:5209/api/DeleteEndereco=1
-Content-Type: application/json

@@ -1,0 +1,63 @@
+###############################################################################
+#                      ENDPOINTS - ENTRADA DE PRODUTO
+###############################################################################
+# IMPORTANTE: A entrada de produto registra na tabela EntradaProduto e 
+# automaticamente atualiza o Inventário (aloca produto na posição)
+# 
+# REGRA PRINCIPAL: Uma posição só pode ter produtos de UM único ID!
+# - Se a posição está vazia, aloca o produto
+# - Se a posição já tem o MESMO produto, adiciona quantidade
+# - Se a posição tem produto DIFERENTE, retorna ERRO
+
+### Listar Todas as Entradas
+GET http://localhost:5209/api/GetEntradaProduto
+
+### Buscar Entradas por ID da Entrada
+GET http://localhost:5209/api/GetEntradaProdutoById=1
+
+### Registrar Entrada de Produto em Posição Vazia
+POST http://localhost:5209/api/PostEntradaProduto
+Content-Type: application/json
+
+{
+  "fornecedorId": 1,
+  "produtoId": 1,
+  "quantidadeRecebida": 50,
+  "inventarioId": 1
+}
+
+### Adicionar Mais do MESMO Produto (funciona!)
+POST http://localhost:5209/api/PostEntradaProduto
+Content-Type: application/json
+
+{
+  "fornecedorId": 1,
+  "produtoId": 1,
+  "quantidadeRecebida": 30,
+  "inventarioId": 1
+}
+
+### TESTE DE ERRO: Tentar Adicionar Produto Diferente (vai dar erro!)
+POST http://localhost:5209/api/PostEntradaProduto
+Content-Type: application/json
+
+{
+  "fornecedorId": 1,
+  "produtoId": 2,
+  "quantidadeRecebida": 20,
+  "inventarioId": 1
+}
+
+### Registrar Entrada em Outra Posição
+POST http://localhost:5209/api/PostEntradaProduto
+Content-Type: application/json
+
+{
+  "fornecedorId": 1,
+  "produtoId": 2,
+  "quantidadeRecebida": 75,
+  "inventarioId": 2
+}
+
+### Deletar Registro de Entrada
+DELETE http://localhost:5209/api/DeleteEntradaProduto=1&1
