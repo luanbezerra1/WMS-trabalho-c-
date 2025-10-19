@@ -1,14 +1,3 @@
-###############################################################################
-#                      ENDPOINTS - ENTRADA DE PRODUTO
-###############################################################################
-# IMPORTANTE: A entrada de produto registra na tabela EntradaProduto e 
-# automaticamente atualiza o Inventário (aloca produto na posição)
-# 
-# REGRA PRINCIPAL: Uma posição só pode ter produtos de UM único ID!
-# - Se a posição está vazia, aloca o produto
-# - Se a posição já tem o MESMO produto, adiciona quantidade
-# - Se a posição tem produto DIFERENTE, retorna ERRO
-
 ### Listar Todas as Entradas
 GET http://localhost:5209/api/GetEntradaProduto
 
@@ -23,7 +12,7 @@ Content-Type: application/json
   "fornecedorId": 1,
   "produtoId": 1,
   "quantidadeRecebida": 10,
-  "inventarioId": 2
+  "inventarioId": 1
 }
 
 ### Adicionar Mais do MESMO Produto (funciona!)

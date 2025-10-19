@@ -94,34 +94,29 @@ namespace Wms.Controllers
                     int quantidadeRetirada = dados.GetProperty("quantidadeRetirada").GetInt32();
                     int inventarioId = dados.GetProperty("inventarioId").GetInt32();
 
-                    // Validação: Cliente existe?
                     Cliente? cliente = ctx.Cliente.Find(clienteId);
                     if (cliente is null)
                     {
                         return Results.NotFound($"Cliente com ID {clienteId} não encontrado!");
                     }
 
-                    // Validação: Produto existe?
                     Produto? produto = ctx.Produto.Find(produtoId);
                     if (produto is null)
                     {
                         return Results.NotFound($"Produto com ID {produtoId} não encontrado!");
                     }
 
-                    // Validação: Posição do inventário existe?
                     Inventario? posicao = ctx.Inventario.Find(inventarioId);
                     if (posicao is null)
                     {
                         return Results.NotFound($"Posição de inventário com ID {inventarioId} não encontrada!");
                     }
 
-                    // Validação: Quantidade válida?
                     if (quantidadeRetirada <= 0)
                     {
                         return Results.BadRequest("Quantidade retirada deve ser maior que zero!");
                     }
 
-                    // Verificação: produto e quantidade disponíveis na posição
                     if (posicao.ProdutoId != produtoId)
                     {
                         return Results.BadRequest($"A posição {posicao.NomePosicao} não contém o produto ID {produtoId}!");
@@ -132,18 +127,14 @@ namespace Wms.Controllers
                         return Results.BadRequest($"Quantidade insuficiente! Na posição há apenas {posicao.Quantidade} unidades.");
                     }
 
-                    // Gerar ID único para a saída
                     int saidaId = SaidaProduto.GerarSaidaId(ctx);
 
-                    // Criar registro de saída
                     SaidaProduto novaSaida = SaidaProduto.Criar(saidaId, clienteId, produtoId, quantidadeRetirada);
 
                     ctx.SaidaProduto.Add(novaSaida);
 
-                    // Atualizar inventário (reduzir quantidade)
                     posicao.Quantidade -= quantidadeRetirada;
 
-                    // Se quantidade zerar, limpa a posição
                     if (posicao.Quantidade <= 0)
                     {
                         posicao.ProdutoId = null;
@@ -153,6 +144,15 @@ namespace Wms.Controllers
                     ctx.Inventario.Update(posicao);
                     ctx.SaveChanges();
 
+                    string mensagemLog =
+                        $"Saída ID {saidaId}: Produto '{produto.nomeProduto}' (ID: {produtoId}) - " +
+                        $"Quantidade retirada: {quantidadeRetirada} unidades - " +
+                        $"Cliente ID: {clienteId} - " +
+                        $"Posição: {posicao.NomePosicao} (ID: {inventarioId}) - " +
+                        $"Armazém ID: {posicao.ArmazemId}";
+
+                    RelatorioLogs.SalvarLog(ctx, mensagemLog);
+                    
                     return Results.Created("", new
                     {
                         saida = novaSaida,

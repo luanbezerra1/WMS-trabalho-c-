@@ -9,18 +9,20 @@ namespace Wms.Models
     public class Produto
     {
         public int Id { get; set; }
+
         public string nomeProduto { get; set; } = string.Empty;
+
         public string descricao { get; set; } = string.Empty;
+
         public int lote { get; set; }
+
         public int fornecedorId { get; set; }
+
         public double preco { get; set; }
-        public Categorias Categoria { get; set; }
+
+        public string categoria { get; set; } = string.Empty;
+        
         public DateTime CriadoEm { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-
-
-        // Relação 1:N entre Produto e Inventario
-        // Um Produto pode estar presente em vários registros de Inventario 
-        // Essa coleção permite acessar todos os inventários onde o produto aparece.
         
         public ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
         
@@ -44,14 +46,14 @@ namespace Wms.Models
         }
 
         
-        public static Produto Criar(string nomeProduto, string descricao, int lote, int fornecedorId, double preco, Categorias categoria)
+        public static Produto Criar(string nomeProduto, string descricao, int lote, int fornecedorId, double preco, string categoria)
         {
             /*
             
             Autor: Vitor
             Data de Criação: 13/10/2025
             Descrição: Metodo responsavel por criar um produto.
-            Args: nomeProduto(string), descricao(string), lote(int), fornecedorId(int), preco(double), categoria(Categorias)
+            Args: nomeProduto(string), descricao(string), lote(int), fornecedorId(int), preco(double), categoria(string)
             Return: Produto(Produto)
             
             */
@@ -63,20 +65,20 @@ namespace Wms.Models
                 lote = lote,
                 fornecedorId = fornecedorId,
                 preco = preco,
-                Categoria = categoria,
+                categoria = categoria,
                 CriadoEm = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"))
             };
         }
 
         
-        public void Alterar(string nomeProduto, string descricao, int lote, int fornecedorId, double preco, Categorias categoria)
+        public void Alterar(string nomeProduto, string descricao, int lote, int fornecedorId, double preco, string categoria)
         {
             /*
             
             Autor: Vitor
             Data de Criação: 13/10/2025
             Descrição: Metodo responsavel por alterar um produto.
-            Args: nomeProduto(string), descricao(string), lote(int), fornecedorId(int), preco(double), categoria(Categorias)
+            Args: nomeProduto(string), descricao(string), lote(int), fornecedorId(int), preco(double), categoria(string)
             Return: None
             
             */
@@ -86,7 +88,7 @@ namespace Wms.Models
             this.lote = lote;
             this.fornecedorId = fornecedorId;
             this.preco = preco;
-            this.Categoria = categoria;
+            this.categoria = categoria;
         }
 
         

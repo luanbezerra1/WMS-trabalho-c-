@@ -108,7 +108,6 @@ namespace Wms.Controllers
                     }
                 }
 
-                // Valida se o login já existe
                 Usuario? loginExistente = ctx.Usuario.FirstOrDefault(x => x.login == usuario.login);
                 if (loginExistente is not null)
                 {
@@ -167,7 +166,6 @@ namespace Wms.Controllers
                     return Results.NotFound("Usuário não encontrado!");
                 }
 
-                // Valida se o login já existe (exceto para o próprio usuário)
                 Usuario? loginExistente = ctx.Usuario.FirstOrDefault(x => x.login == usuarioAlterado.login && x.Id != id);
                 if (loginExistente is not null)
                 {

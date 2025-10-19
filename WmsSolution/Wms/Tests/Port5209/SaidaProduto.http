@@ -1,7 +1,3 @@
-###############################################################################
-#                     ENDPOINTS - SAÍDA DE PRODUTO
-###############################################################################
-
 ### Listar Todas as Saídas
 GET http://localhost:5209/api/GetSaidaProduto
 
@@ -15,7 +11,7 @@ Content-Type: application/json
 {
   "clienteId": 1,
   "produtoId": 1,
-  "quantidadeRetirada": 20,
+  "quantidadeRetirada": 15,
   "inventarioId": 1
 }
 

@@ -94,30 +94,6 @@ namespace Wms.Controllers
                 return Results.Created("", novoEndereco);
             });
 
-            app.MapDelete("/api/DeleteEndereco={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
-            {
-                /*
-
-                Autor: Vitor
-                Data de Criação: 15/10/2025
-                Descrição: Endpoint Delete para deletar um endereço.
-                Args: id(int), ctx(AppDataContext)
-                Return: Results.Ok(resultado) ou Results.NotFound("Endereço não encontrado!")
-
-                */
-
-                Endereco? resultado = ctx.Endereco.Find(id);
-
-                if (resultado is null)
-                {
-                    return Results.NotFound("Endereço não encontrado!");
-                }
-                
-                Endereco.Deletar(ctx, id);
-
-                return Results.Ok(resultado);
-            });
-
             app.MapPut("/api/PutEndereco={id}", ([FromRoute] int id, [FromBody] Endereco enderecoAlterado, [FromServices] AppDataContext ctx) =>
             {
                 /*
@@ -142,6 +118,30 @@ namespace Wms.Controllers
                 ctx.Endereco.Update(resultado);
                 ctx.SaveChanges();
                 
+                return Results.Ok(resultado);
+            });
+
+            app.MapDelete("/api/DeleteEndereco={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
+            {
+                /*
+
+                Autor: Vitor
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Delete para deletar um endereço.
+                Args: id(int), ctx(AppDataContext)
+                Return: Results.Ok(resultado) ou Results.NotFound("Endereço não encontrado!")
+
+                */
+
+                Endereco? resultado = ctx.Endereco.Find(id);
+
+                if (resultado is null)
+                {
+                    return Results.NotFound("Endereço não encontrado!");
+                }
+                
+                Endereco.Deletar(ctx, id);
+
                 return Results.Ok(resultado);
             });
         }

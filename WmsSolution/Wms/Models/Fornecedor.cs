@@ -9,13 +9,18 @@ namespace Wms.Models
     public class Fornecedor
     {
         public int Id { get; set; }
+
         public string nome { get; set; } = string.Empty;
+
         public string email { get; set; } = string.Empty;
+
         public string telefone { get; set; } = string.Empty;
+
         public string cnpj { get; set; } = string.Empty;
 
-        public int EnderecoId { get; set; }           // FK obrigatória
-        public Endereco? Endereco { get; set; }       // navegação (opcional)
+        public int EnderecoId { get; set; }   
+        
+        public Endereco? Endereco { get; set; }       
 
         public static int GerarId(AppDataContext ctx)
         {

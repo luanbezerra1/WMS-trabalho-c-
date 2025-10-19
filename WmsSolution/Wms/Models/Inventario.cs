@@ -9,12 +9,19 @@ namespace Wms.Models
     public class Inventario
     {
         public int Id { get; set; }
+
         public int ArmazemId { get; set; }
+
         public Armazem? Armazem { get; set; }
+
         public string NomePosicao { get; set; } = string.Empty;
+
         public int? ProdutoId { get; set; }
+
         public Produto? Produto { get; set; }
+
         public int Quantidade { get; set; }
+        
         public DateTime UltimaMovimentacao { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
         public static Inventario CriarPosicaoVazia(int armazemId, string nomePosicao)

@@ -1,5 +1,5 @@
 /**
- * Autor: Vitor
+ * Autor: Luan
  * Data de Criação: 19/10/2025
  * Descrição: Controller para geração de relatórios e logs do sistema
 **/
@@ -15,7 +15,7 @@ namespace Wms.Controllers
         {
             /*
             
-            Autor: Vitor
+            Autor: Luan
             Data de Criação: 19/10/2025
             Descrição: Endpoints para consulta de logs de entrada de produtos.
             Args: ctx(AppDataContext)
@@ -26,7 +26,7 @@ namespace Wms.Controllers
             {
                 /*
                 
-                Autor: Vitor
+                Autor: Luan
                 Data de Criação: 19/10/2025
                 Descrição: Endpoint Get para listar todos os logs.
                 Args: ctx(AppDataContext)
@@ -42,12 +42,11 @@ namespace Wms.Controllers
                 return Results.NotFound("Nenhum log encontrado!");
             });
 
-            app.MapGet("/api/GetLogById={logId}", 
-                ([FromRoute] int logId, [FromServices] AppDataContext ctx) =>
+            app.MapGet("/api/GetLogById={logId}", ([FromRoute] int logId, [FromServices] AppDataContext ctx) =>
             {
                 /*
                 
-                Autor: Vitor
+                Autor: Luan
                 Data de Criação: 19/10/2025
                 Descrição: Endpoint Get para buscar log específico pelo ID.
                 Args: logId(int), ctx(AppDataContext)

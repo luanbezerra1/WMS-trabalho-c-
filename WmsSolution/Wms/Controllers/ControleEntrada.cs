@@ -9,18 +9,24 @@ namespace Wms.Models
     public class EntradaProduto
     {
         public int EntradaId { get; set; }
+
         public int FornecedorId { get; set; }
+
         public Fornecedor? Fornecedor { get; set; }
+
         public int ProdutoId { get; set; }
+
         public Produto? Produto { get; set; }
+
         public int QuantidadeRecebida { get; set; }
+        
         public DateTime DataEntrada { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
         public static int GerarEntradaId(AppDataContext ctx)
         {
             /*
             
-            Autor: Vitor, Caua, Luan
+            Autor: Vitor
             Data de Criação: 18/10/2025
             Descrição: Método responsável por gerar um ID para a entrada.
             Args: ctx(AppDataContext)
@@ -39,7 +45,7 @@ namespace Wms.Models
         {
             /*
             
-            Autor: Vitor, Caua, Luan
+            Autor: Vitor
             Data de Criação: 18/10/2025
             Descrição: Método responsável por criar uma entrada de produto.
             Args: entradaId(int), fornecedorId(int), produtoId(int), quantidadeRecebida(int)
@@ -61,7 +67,7 @@ namespace Wms.Models
         {
             /*
             
-            Autor: Vitor, Caua, Luan
+            Autor: Vitor
             Data de Criação: 18/10/2025
             Descrição: Método responsável por deletar uma entrada de produto.
             Args: ctx(AppDataContext), entradaId(int), produtoId(int)
@@ -69,8 +75,7 @@ namespace Wms.Models
             
             */
 
-            EntradaProduto? entrada = ctx.EntradaProduto
-                .FirstOrDefault(e => e.EntradaId == entradaId && e.ProdutoId == produtoId);
+            EntradaProduto? entrada = ctx.EntradaProduto.FirstOrDefault(e => e.EntradaId == entradaId && e.ProdutoId == produtoId);
             
             if (entrada is not null)
             {

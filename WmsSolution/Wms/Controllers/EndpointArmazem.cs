@@ -108,13 +108,11 @@ namespace Wms.Controllers
                     }
                 }
 
-                // nomeArmazem (validação)
                 if (string.IsNullOrEmpty(armazem.nomeArmazem))
                 {
                     return Results.BadRequest("Nome do armazém deve ser informado!");
                 }
 
-                // enderecoId (validação)
                 if (armazem.EnderecoId > 0)
                 {
                     Endereco? enderecoExistente = ctx.Endereco.Find(armazem.EnderecoId);
@@ -124,13 +122,11 @@ namespace Wms.Controllers
                     }
                 }
 
-                // posicoes (validação)
                 if (armazem.Posicoes <= 0)
                 {
                     return Results.BadRequest("Número de posições deve ser maior que zero!");
                 }
 
-                // produtoPosicao (validação)
                 if (armazem.ProdutoPosicao <= 0)
                 {
                     return Results.BadRequest("Número de produtos por posição deve ser maior que zero!");
@@ -142,16 +138,68 @@ namespace Wms.Controllers
                 ctx.Armazem.Add(novoArmazem);
                 ctx.SaveChanges();
 
-                // Criar posições
+                // Criar posicoes (inventario)
                 for (int i = 1; i <= novoArmazem.Posicoes; i++)
                 {
                     string nomePosicao = $"P{novoArmazem.Id:D3}{i:D3}";
                     Inventario posicao = Inventario.CriarPosicaoVazia(novoArmazem.Id, nomePosicao);
                     ctx.Inventario.Add(posicao);
                 }
+
                 ctx.SaveChanges();
 
                 return Results.Created("", novoArmazem);
+            });
+
+            app.MapPut("/api/PutArmazem={id}", ([FromRoute] int id, [FromBody] Armazem armazemAlterado, [FromServices] AppDataContext ctx) =>
+            {
+                /*
+
+                Autor: Caua
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Put para alterar um armazém.
+                Args: id(int), armazemAlterado(Armazem), ctx(AppDataContext)
+                Return: Results.Ok(resultado) ou Results.NotFound("Armazém não encontrado!")
+
+                */
+
+                Armazem? resultado = ctx.Armazem.Find(id);
+
+                if (resultado is null)
+                {
+                    return Results.NotFound("Armazém não encontrado!");
+                }
+
+                if (string.IsNullOrEmpty(armazemAlterado.nomeArmazem))
+                {
+                    return Results.BadRequest("Nome do armazém deve ser informado!");
+                }
+
+                if (armazemAlterado.EnderecoId > 0)
+                {
+                    Endereco? enderecoExistente = ctx.Endereco.Find(armazemAlterado.EnderecoId);
+                    if (enderecoExistente is null)
+                    {
+                        return Results.NotFound($"Endereço com ID {armazemAlterado.EnderecoId} não encontrado!");
+                    }
+                }
+
+                if (armazemAlterado.Posicoes <= 0)
+                {
+                    return Results.BadRequest("Número de posições deve ser maior que zero!");
+                }
+
+                if (armazemAlterado.ProdutoPosicao <= 0)
+                {
+                    return Results.BadRequest("Número de produtos por posição deve ser maior que zero!");
+                }
+                
+                resultado.Alterar(armazemAlterado.nomeArmazem, armazemAlterado.status, armazemAlterado.Posicoes, armazemAlterado.ProdutoPosicao, armazemAlterado.EnderecoId);
+
+                ctx.Armazem.Update(resultado);
+                ctx.SaveChanges();
+                
+                return Results.Ok(resultado);
             });
 
             app.MapDelete("/api/DeleteArmazem={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -175,61 +223,6 @@ namespace Wms.Controllers
                 
                 Armazem.Deletar(ctx, id);
 
-                return Results.Ok(resultado);
-            });
-
-            app.MapPut("/api/PutArmazem={id}", ([FromRoute] int id, [FromBody] Armazem armazemAlterado, [FromServices] AppDataContext ctx) =>
-            {
-                /*
-
-                Autor: Caua
-                Data de Criação: 15/10/2025
-                Descrição: Endpoint Put para alterar um armazém.
-                Args: id(int), armazemAlterado(Armazem), ctx(AppDataContext)
-                Return: Results.Ok(resultado) ou Results.NotFound("Armazém não encontrado!")
-
-                */
-
-                Armazem? resultado = ctx.Armazem.Find(id);
-
-                if (resultado is null)
-                {
-                    return Results.NotFound("Armazém não encontrado!");
-                }
-
-                // nomeArmazem (validação)
-                if (string.IsNullOrEmpty(armazemAlterado.nomeArmazem))
-                {
-                    return Results.BadRequest("Nome do armazém deve ser informado!");
-                }
-
-                // enderecoId (validação)
-                if (armazemAlterado.EnderecoId > 0)
-                {
-                    Endereco? enderecoExistente = ctx.Endereco.Find(armazemAlterado.EnderecoId);
-                    if (enderecoExistente is null)
-                    {
-                        return Results.NotFound($"Endereço com ID {armazemAlterado.EnderecoId} não encontrado!");
-                    }
-                }
-
-                // posicoes (validação)
-                if (armazemAlterado.Posicoes <= 0)
-                {
-                    return Results.BadRequest("Número de posições deve ser maior que zero!");
-                }
-
-                // produtoPosicao (validação)
-                if (armazemAlterado.ProdutoPosicao <= 0)
-                {
-                    return Results.BadRequest("Número de produtos por posição deve ser maior que zero!");
-                }
-                
-                resultado.Alterar(armazemAlterado.nomeArmazem, armazemAlterado.status, armazemAlterado.Posicoes, armazemAlterado.ProdutoPosicao, armazemAlterado.EnderecoId);
-
-                ctx.Armazem.Update(resultado);
-                ctx.SaveChanges();
-                
                 return Results.Ok(resultado);
             });
         }

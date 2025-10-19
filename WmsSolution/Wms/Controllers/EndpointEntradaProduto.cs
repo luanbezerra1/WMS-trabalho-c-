@@ -42,8 +42,7 @@ namespace Wms.Controllers
                 return Results.NotFound("Nenhuma entrada encontrada!");
             });
 
-            app.MapGet("/api/GetEntradaProdutoById={entradaId}", 
-                ([FromRoute] int entradaId, [FromServices] AppDataContext ctx) =>
+            app.MapGet("/api/GetEntradaProdutoById={entradaId}", ([FromRoute] int entradaId, [FromServices] AppDataContext ctx) =>
             {
                 /*
                 
@@ -94,41 +93,35 @@ namespace Wms.Controllers
                     int quantidadeRecebida = dados.GetProperty("quantidadeRecebida").GetInt32();
                     int inventarioId = dados.GetProperty("inventarioId").GetInt32();
 
-                    // Validação: Fornecedor existe?
                     Fornecedor? fornecedor = ctx.Fornecedor.Find(fornecedorId);
                     if (fornecedor is null)
                     {
                         return Results.NotFound($"Fornecedor com ID {fornecedorId} não encontrado!");
                     }
 
-                    // Validação: Produto existe?
                     Produto? produto = ctx.Produto.Find(produtoId);
                     if (produto is null)
                     {
                         return Results.NotFound($"Produto com ID {produtoId} não encontrado!");
                     }
 
-                    // Validação: Posição do inventário existe?
                     Inventario? posicao = ctx.Inventario.Find(inventarioId);
                     if (posicao is null)
                     {
                         return Results.NotFound($"Posição de inventário com ID {inventarioId} não encontrada!");
                     }
 
-                    // Validação: Quantidade válida?
                     if (quantidadeRecebida <= 0)
                     {
                         return Results.BadRequest("Quantidade recebida deve ser maior que zero!");
                     }
 
-                    // Buscar o armazém para verificar capacidade
                     Armazem? armazem = ctx.Armazem.Find(posicao.ArmazemId);
                     if (armazem is null)
                     {
                         return Results.NotFound($"Armazém com ID {posicao.ArmazemId} não encontrado!");
                     }
 
-                    // Validação PRINCIPAL: Posição já tem produto de outro ID?
                     if (posicao.ProdutoId.HasValue && posicao.ProdutoId.Value != produtoId)
                     {
                         return Results.BadRequest(
@@ -137,7 +130,6 @@ namespace Wms.Controllers
                             $"Escolha outra posição ou remova o produto atual.");
                     }
 
-                    // Validação: Quantidade total não pode exceder o limite da posição
                     int quantidadeAtual = posicao.Quantidade;
                     int quantidadeTotal = quantidadeAtual + quantidadeRecebida;
 
@@ -151,30 +143,26 @@ namespace Wms.Controllers
                             $"Escolha outra posição ou reduza a quantidade.");
                     }
 
-                    // Gerar ID único para a entrada
                     int entradaId = EntradaProduto.GerarEntradaId(ctx);
 
-                    // Criar registro de entrada
                     EntradaProduto novaEntrada = EntradaProduto.Criar(entradaId, fornecedorId, produtoId, quantidadeRecebida);
 
                     ctx.EntradaProduto.Add(novaEntrada);
 
-                    // Atualizar inventário
                     if (posicao.ProdutoId is null)
                     {
-                        // Posição vazia - alocar produto
+                        // posicao.ProdutoId (alocação)
                         posicao.AlocarProduto(produtoId, quantidadeRecebida);
                     }
                     else
                     {
-                        // Posição já tem o mesmo produto - adicionar quantidade
+                        // posicao.Quantidade (atualização)
                         posicao.AtualizarQuantidade(quantidadeTotal);
                     }
 
                     ctx.Inventario.Update(posicao);
                     ctx.SaveChanges();
 
-                    // Salvar log da entrada de produto
                     string mensagemLog = $"Entrada ID {entradaId}: Produto '{produto.nomeProduto}' (ID: {produtoId}) - " +
                                         $"Quantidade: {quantidadeRecebida} unidades - " +
                                         $"Fornecedor ID: {fornecedorId} - " +

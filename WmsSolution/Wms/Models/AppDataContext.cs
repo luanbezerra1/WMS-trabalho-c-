@@ -13,14 +13,23 @@ public class AppDataContext : DbContext
     public AppDataContext(DbContextOptions<AppDataContext> options) : base(options) { }
 
     public DbSet<Produto> Produto { get; set; }
+
     public DbSet<Armazem> Armazem { get; set; }
+
     public DbSet<Usuario> Usuario { get; set; }
+
     public DbSet<Endereco> Endereco { get; set; }
+
     public DbSet<Cliente> Cliente { get; set; }
+
     public DbSet<Fornecedor> Fornecedor { get; set; }
+
     public DbSet<Inventario> Inventario { get; set; }
+
     public DbSet<EntradaProduto> EntradaProduto { get; set; }
+
     public DbSet<SaidaProduto> SaidaProduto { get; set; }
+    
     public DbSet<RelatorioLogs> RelatorioLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

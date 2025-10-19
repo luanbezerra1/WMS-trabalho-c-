@@ -1,9 +1,3 @@
-###############################################################################
-#                         ENDPOINTS - INVENTÁRIO
-###############################################################################
-# IMPORTANTE: O inventário (posições) é criado automaticamente ao criar um armazém
-# Cada posição pode ter apenas UM tipo de produto
-# A quantidade máxima por posição é definida em ProdutoPosicao do armazém
 
 ### Listar TODO o Inventário (retorna com nome do produto)
 GET http://localhost:5209/api/GetInventario
@@ -20,25 +14,8 @@ GET http://localhost:5209/api/GetInventarioByProduto=1
 ### Listar Apenas Posições Vazias de um Armazém
 GET http://localhost:5209/api/GetPosicoesVazias=1
 
-### Alocar Produto em Posição Vazia (primeira vez)
-PUT http://localhost:5209/api/AlocarProduto=1
-Content-Type: application/json
-
-{
-  "produtoId": 1,
-  "quantidade": 50
-}
-
-### Atualizar Quantidade (somar ou reduzir)
-PUT http://localhost:5209/api/AtualizarQuantidade=1
-Content-Type: application/json
-
-{
-  "quantidade": 75
-}
-
-### Remover Produto da Posição (deixa vazia novamente)
+### Remover Produto da Posição 
 PUT http://localhost:5209/api/RemoverProduto=1
 
-### Deletar Posição (cuidado!)
+### Deletar Posição 
 DELETE http://localhost:5209/api/DeleteInventario=1

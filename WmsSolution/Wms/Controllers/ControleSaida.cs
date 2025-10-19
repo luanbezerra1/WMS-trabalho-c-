@@ -9,21 +9,23 @@ namespace Wms.Models
     public class SaidaProduto
     {
         public int SaidaId { get; set; }
+
         public int ClienteId { get; set; }
+
         public Cliente? Cliente { get; set; }
+
         public int ProdutoId { get; set; }
+
         public Produto? Produto { get; set; }
+
         public int QuantidadeRetirada { get; set; }
 
-        public DateTime DataSaida { get; set; } =
-            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, 
-            TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+        public DateTime DataSaida { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
-      
         public static int GerarSaidaId(AppDataContext ctx)
         {
             /*
-             * Autor: Vitor, Cauã, Luan
+             * Autor: Cauã
              * Data de Criação : 18/10/2025
              * Descrição: Gera um ID único para a saída de produto.
              * Args: ctx(AppDataContext)
@@ -34,13 +36,12 @@ namespace Wms.Models
                 return 1;
 
             return ctx.SaidaProduto.Max(s => s.SaidaId) + 1;
-        }
+        }  
 
-        
         public static SaidaProduto Criar(int saidaId, int clienteId, int produtoId, int quantidadeRetirada)
         {
             /*
-             * Autor: Vitor, Cauã, Luan
+             * Autor: Cauã
              * Data de Criação : 18/10/2025
              * Descrição: Cria um objeto de saída de produto.
              * Args: saidaId(int), clienteId(int), produtoId(int), quantidadeRetirada(int)
@@ -61,15 +62,14 @@ namespace Wms.Models
         public static void Deletar(AppDataContext ctx, int saidaId, int produtoId)
         {
             /*
-             * Autor: Vitor, Cauã, Luan
+             * Autor: Cauã
              * Data de Criação : 18/10/2025
              * Descrição: Remove uma saída de produto do banco.
              * Args: ctx(AppDataContext), saidaId(int), produtoId(int)
              * Return: None
             */
 
-            SaidaProduto? saida = ctx.SaidaProduto
-                .FirstOrDefault(s => s.SaidaId == saidaId && s.ProdutoId == produtoId);
+            SaidaProduto? saida = ctx.SaidaProduto.FirstOrDefault(s => s.SaidaId == saidaId && s.ProdutoId == produtoId);
 
             if (saida is not null)
             {

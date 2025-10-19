@@ -108,21 +108,17 @@ namespace Wms.Controllers
                     }
                 }
 
-                // Valida se o CNPJ foi informado
                 if (string.IsNullOrEmpty(fornecedor.cnpj))
                 {
                     return Results.BadRequest("Fornecedor deve ter CNPJ informado!");
                 }
 
-                // Valida se CNPJ já existe
                 Fornecedor? cnpjExistente = ctx.Fornecedor.FirstOrDefault(x => x.cnpj == fornecedor.cnpj);
                 if (cnpjExistente is not null)
                 {
                     return Results.Conflict("Esse CNPJ já está cadastrado!");
                 }
 
-                // Valida se o endereço existe (caso tenha sido informado)
-                // if (fornecedor.enderecoId.HasValue)  // ERRADO
                 if (fornecedor.EnderecoId > 0)          
                 {
                     Endereco? enderecoExistente = ctx.Endereco.Find(fornecedor.EnderecoId);
@@ -184,20 +180,17 @@ namespace Wms.Controllers
                     return Results.NotFound("Fornecedor não encontrado!");
                 }
 
-                // Valida se o CNPJ foi informado
                 if (string.IsNullOrEmpty(fornecedorAlterado.cnpj))
                 {
                     return Results.BadRequest("Fornecedor deve ter CNPJ informado!");
                 }
 
-                // Valida se CNPJ já existe (exceto para o próprio fornecedor)
                 Fornecedor? cnpjExistente = ctx.Fornecedor.FirstOrDefault(x => x.cnpj == fornecedorAlterado.cnpj && x.Id != id);
                 if (cnpjExistente is not null)
                 {
                     return Results.Conflict("Esse CNPJ já está cadastrado!");
                 }
 
-                // Valida se o endereço existe (caso tenha sido informado)
                 if (fornecedorAlterado.EnderecoId > 0)
                 {
                     Endereco? enderecoExistente = ctx.Endereco.Find(fornecedorAlterado.EnderecoId);

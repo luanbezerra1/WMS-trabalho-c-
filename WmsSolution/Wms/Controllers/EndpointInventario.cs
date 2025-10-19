@@ -224,14 +224,12 @@ namespace Wms.Controllers
                 int produtoId = (int)dados.produtoId;
                 int quantidade = (int)dados.quantidade;
 
-                // Valida se o produto existe
                 Produto? produtoExistente = ctx.Produto.Find(produtoId);
                 if (produtoExistente is null)
                 {
                     return Results.NotFound($"Produto com ID {produtoId} não encontrado!");
                 }
 
-                // Valida se a quantidade é válida
                 if (quantidade <= 0)
                 {
                     return Results.BadRequest("Quantidade deve ser maior que zero!");
@@ -271,7 +269,6 @@ namespace Wms.Controllers
 
                 int quantidade = (int)dados.quantidade;
 
-                // Valida se a quantidade é válida
                 if (quantidade < 0)
                 {
                     return Results.BadRequest("Quantidade não pode ser negativa!");

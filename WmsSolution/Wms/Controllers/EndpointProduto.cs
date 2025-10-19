@@ -64,19 +64,19 @@ namespace Wms.Controllers
                 return Results.Ok(resultado);
             });
 
-            app.MapGet("/api/GetProdutoByCategoria={categoria}", ([FromRoute] int categoria, [FromServices] AppDataContext ctx) =>
+            app.MapGet("/api/GetProdutoByCategoria={categoria}", ([FromRoute] string categoria, [FromServices] AppDataContext ctx) =>
             {
                 /*
 
                 Autor: Vitor
                 Data de Criação: 13/10/2025
                 Descrição: Endpoint Get para buscar produtos por categoria.
-                Args: categoria(int), ctx(AppDataContext)
+                Args: categoria(string), ctx(AppDataContext)
                 Return: Results.Ok(resultado) ou Results.NotFound("Nenhum produto encontrado para essa categoria!")
 
                 */
 
-                var resultado = ctx.Produto.Where(x => (int)x.Categoria == categoria).ToList();
+                var resultado = ctx.Produto.Where(x => x.categoria == categoria).ToList();
 
                 if (!resultado.Any())
                 {
@@ -130,32 +130,28 @@ namespace Wms.Controllers
                     }
                 }
 
-                // Valida se o nome do produto foi informado
                 if (string.IsNullOrEmpty(produto.nomeProduto))
                 {
                     return Results.BadRequest("Nome do produto deve ser informado!");
                 }
 
-                // Valida se o fornecedor existe
                 Fornecedor? fornecedorExistente = ctx.Fornecedor.Find(produto.fornecedorId);
                 if (fornecedorExistente is null)
                 {
                     return Results.NotFound($"Fornecedor com ID {produto.fornecedorId} não encontrado!");
                 }
 
-                // Valida se o preço é válido
                 if (produto.preco <= 0)
                 {
                     return Results.BadRequest("Preço do produto deve ser maior que zero!");
                 }
 
-                // Valida se a quantidade do lote é válida
                 if (produto.lote <= 0)
                 {
                     return Results.BadRequest("Lote do produto deve ser maior que zero!");
                 }
                 
-                Produto novoProduto = Produto.Criar(produto.nomeProduto, produto.descricao, produto.lote, produto.fornecedorId, produto.preco, produto.Categoria);
+                Produto novoProduto = Produto.Criar(produto.nomeProduto, produto.descricao, produto.lote, produto.fornecedorId, produto.preco, produto.categoria);
                 novoProduto.Id = Produto.GerarId(ctx);
                 
                 ctx.Produto.Add(novoProduto);
@@ -207,32 +203,28 @@ namespace Wms.Controllers
                     return Results.NotFound("Produto não encontrado!");
                 }
 
-                // Valida se o nome do produto foi informado
                 if (string.IsNullOrEmpty(produtoAlterado.nomeProduto))
                 {
                     return Results.BadRequest("Nome do produto deve ser informado!");
                 }
 
-                // Valida se o fornecedor existe
                 Fornecedor? fornecedorExistente = ctx.Fornecedor.Find(produtoAlterado.fornecedorId);
                 if (fornecedorExistente is null)
                 {
                     return Results.NotFound($"Fornecedor com ID {produtoAlterado.fornecedorId} não encontrado!");
                 }
 
-                // Valida se o preço é válido
                 if (produtoAlterado.preco <= 0)
                 {
                     return Results.BadRequest("Preço do produto deve ser maior que zero!");
                 }
 
-                // Valida se a quantidade do lote é válida
                 if (produtoAlterado.lote <= 0)
                 {
                     return Results.BadRequest("Lote do produto deve ser maior que zero!");
                 }
                 
-                resultado.Alterar(produtoAlterado.nomeProduto, produtoAlterado.descricao, produtoAlterado.lote, produtoAlterado.fornecedorId, produtoAlterado.preco, produtoAlterado.Categoria);
+                resultado.Alterar(produtoAlterado.nomeProduto, produtoAlterado.descricao, produtoAlterado.lote, produtoAlterado.fornecedorId, produtoAlterado.preco, produtoAlterado.categoria);
 
                 ctx.Produto.Update(resultado);
                 ctx.SaveChanges();

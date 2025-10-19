@@ -108,20 +108,17 @@ namespace Wms.Controllers
                     }
                 }
 
-                // cpf (validação)
                 if (string.IsNullOrEmpty(cliente.Cpf))
                 {
                     return Results.BadRequest("Cliente deve ter CPF informado!");
                 }
 
-                // cpf (validação)
                 Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == cliente.Cpf);
                 if (cpfExistente is not null)
                 {
                     return Results.Conflict("Esse CPF já está cadastrado!");
                 }
 
-                // enderecoId (validação)
                 if (cliente.EnderecoId > 0)
                 {
                     Endereco? enderecoExistente = ctx.Endereco.Find(cliente.EnderecoId);
@@ -138,6 +135,53 @@ namespace Wms.Controllers
                 ctx.SaveChanges();
 
                 return Results.Created("", novoCliente);
+            });
+
+            app.MapPut("/api/PutCliente={id}", ([FromRoute] int id, [FromBody] Cliente clienteAlterado, [FromServices] AppDataContext ctx) =>
+            {
+                /*
+
+                Autor: Vitor
+                Data de Criação: 15/10/2025
+                Descrição: Endpoint Put para alterar um cliente.
+                Args: id(int), clienteAlterado(Cliente), ctx(AppDataContext)
+                Return: Results.Ok(resultado) ou Results.NotFound("Cliente não encontrado!")
+
+                */
+
+                Cliente? resultado = ctx.Cliente.Find(id);
+
+                if (resultado is null)
+                {
+                    return Results.NotFound("Cliente não encontrado!");
+                }
+
+                if (string.IsNullOrEmpty(clienteAlterado.Cpf))
+                {
+                    return Results.BadRequest("Cliente deve ter CPF informado!");
+                }
+
+                Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == clienteAlterado.Cpf && x.Id != id);
+                if (cpfExistente is not null)
+                {
+                    return Results.Conflict("Esse CPF já está cadastrado!");
+                }
+
+                if (clienteAlterado.EnderecoId > 0)
+                {
+                    Endereco? enderecoExistente = ctx.Endereco.Find(clienteAlterado.EnderecoId);
+                    if (enderecoExistente is null)
+                    {
+                        return Results.NotFound($"Endereço com ID {clienteAlterado.EnderecoId} não encontrado!");
+                    }
+                }
+                
+                resultado.Alterar(clienteAlterado.Nome, clienteAlterado.Email, clienteAlterado.Telefone, clienteAlterado.Cpf, clienteAlterado.EnderecoId);
+
+                ctx.Cliente.Update(resultado);
+                ctx.SaveChanges();
+                
+                return Results.Ok(resultado);
             });
 
             app.MapDelete("/api/DeleteCliente={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -161,56 +205,6 @@ namespace Wms.Controllers
                 
                 Cliente.Deletar(ctx, id);
 
-                return Results.Ok(resultado);
-            });
-
-            app.MapPut("/api/PutCliente={id}", ([FromRoute] int id, [FromBody] Cliente clienteAlterado, [FromServices] AppDataContext ctx) =>
-            {
-                /*
-
-                Autor: Vitor
-                Data de Criação: 15/10/2025
-                Descrição: Endpoint Put para alterar um cliente.
-                Args: id(int), clienteAlterado(Cliente), ctx(AppDataContext)
-                Return: Results.Ok(resultado) ou Results.NotFound("Cliente não encontrado!")
-
-                */
-
-                Cliente? resultado = ctx.Cliente.Find(id);
-
-                if (resultado is null)
-                {
-                    return Results.NotFound("Cliente não encontrado!");
-                }
-
-                // cpf (validação)
-                if (string.IsNullOrEmpty(clienteAlterado.Cpf))
-                {
-                    return Results.BadRequest("Cliente deve ter CPF informado!");
-                }
-
-                // cpf (validação)
-                Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == clienteAlterado.Cpf && x.Id != id);
-                if (cpfExistente is not null)
-                {
-                    return Results.Conflict("Esse CPF já está cadastrado!");
-                }
-
-                // enderecoId (validação)
-                if (clienteAlterado.EnderecoId > 0)
-                {
-                    Endereco? enderecoExistente = ctx.Endereco.Find(clienteAlterado.EnderecoId);
-                    if (enderecoExistente is null)
-                    {
-                        return Results.NotFound($"Endereço com ID {clienteAlterado.EnderecoId} não encontrado!");
-                    }
-                }
-                
-                resultado.Alterar(clienteAlterado.Nome, clienteAlterado.Email, clienteAlterado.Telefone, clienteAlterado.Cpf, clienteAlterado.EnderecoId);
-
-                ctx.Cliente.Update(resultado);
-                ctx.SaveChanges();
-                
                 return Results.Ok(resultado);
             });
         }

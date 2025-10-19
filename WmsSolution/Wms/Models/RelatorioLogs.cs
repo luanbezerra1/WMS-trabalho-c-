@@ -1,5 +1,5 @@
 /**
- * Autor: Vitor
+ * Autor: Luan
  * Data de Criação: 19/10/2025
  * Descrição: Modelo de dados para registro de logs de entrada de produtos
 **/
@@ -12,13 +12,13 @@ public class RelatorioLogs
 {
     [Key]
     public int LogId { get; set; }
+
     public string Mensagem { get; set; } = string.Empty;
+    
     public DateTime DataHora { get; set; }
 
-    // Construtor vazio para o Entity Framework
     public RelatorioLogs() { }
 
-    // Método para criar log
     public static RelatorioLogs Criar(string mensagem)
     {
         return new RelatorioLogs
@@ -28,7 +28,6 @@ public class RelatorioLogs
         };
     }
 
-    // Método para salvar log no banco
     public static void SalvarLog(AppDataContext ctx, string mensagem)
     {
         RelatorioLogs novoLog = Criar(mensagem);

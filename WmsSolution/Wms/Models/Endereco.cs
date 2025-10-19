@@ -11,15 +11,22 @@ namespace Wms.Models
     public class Endereco
     {
         public int Id { get; set; }
+
         public string Rua { get; set; } = string.Empty;
+
         public string Numero { get; set; } = string.Empty;
+
         public string Complemento { get; set; } = string.Empty;
+
         public string Bairro { get; set; } = string.Empty;
+
         public string Cidade { get; set; } = string.Empty;
+
         public string Estado { get; set; } = string.Empty;
+        
         public string Cep { get; set; } = string.Empty;
         
-        public ICollection<Cliente>? Clientes { get; set; } //1:N
+        public ICollection<Cliente>? Clientes { get; set; } 
 
         public static int GerarId(AppDataContext ctx)
         {
@@ -39,7 +46,6 @@ namespace Wms.Models
             }
             return ctx.Endereco.Max(e => e.Id) + 1;
         }
-
         
         public static Endereco Criar(string Rua, string Numero, string Complemento, string Bairro, string Cidade, string Estado, string Cep)
         {
@@ -87,7 +93,6 @@ namespace Wms.Models
             this.Cep = Cep;
         }
 
-        
         public static void Deletar(AppDataContext ctx, int id)
         {
             /*
