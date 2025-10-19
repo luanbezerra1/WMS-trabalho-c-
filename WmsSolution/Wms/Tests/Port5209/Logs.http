@@ -1,0 +1,16 @@
+### Autor: Vitor
+### Data de Criação: 19/10/2025
+### Descrição: Testes para os endpoints de Logs
+
+### LISTAR TODOS OS LOGS
+GET http://localhost:5209/api/GetLogs
+Content-Type: application/json
+
+###
+
+### BUSCAR LOG POR ID (substitua 1 pelo ID desejado)
+GET http://localhost:5209/api/GetLogById=1
+Content-Type: application/json
+
+###
+

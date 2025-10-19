@@ -69,4 +69,7 @@ app.MapEndpointsInventario();
 // ▶ Registra os endpoints de Entrada de Produto
 app.MapEndpointsEntradaProduto();
 
+// ▶ Registra os endpoints de Logs
+app.MapEndpointsLogs();
+
 app.Run();

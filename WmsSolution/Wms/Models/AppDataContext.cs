@@ -21,6 +21,7 @@ public class AppDataContext : DbContext
     public DbSet<Inventario> Inventario { get; set; }
     public DbSet<EntradaProduto> EntradaProduto {get ; set;}   
     public DbSet<SaidaProduto> SaidaProduto { get; set; }
+    public DbSet<RelatorioLogs> RelatorioLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

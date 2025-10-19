@@ -174,6 +174,15 @@ namespace Wms.Controllers
                     ctx.Inventario.Update(posicao);
                     ctx.SaveChanges();
 
+                    // Salvar log da entrada de produto
+                    string mensagemLog = $"Entrada ID {entradaId}: Produto '{produto.nomeProduto}' (ID: {produtoId}) - " +
+                                        $"Quantidade: {quantidadeRecebida} unidades - " +
+                                        $"Fornecedor ID: {fornecedorId} - " +
+                                        $"Posição: {posicao.NomePosicao} (ID: {inventarioId}) - " +
+                                        $"Armazém ID: {posicao.ArmazemId}";
+                    
+                    RelatorioLogs.SalvarLog(ctx, mensagemLog);
+
                     return Results.Created("", new
                     {
                         entrada = novaEntrada,
