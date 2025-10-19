@@ -22,6 +22,20 @@ Content-Type: application/json
   "cep": "01310-100"
 }
 
+### Criar Novo Endereco 2
+POST http://localhost:5209/api/PostEndereco
+Content-Type: application/json
+
+{    
+  "rua": "Av. America",
+  "numero": "111",
+  "complemento": "Armazem 2",
+  "bairro": "Novo Mundo",
+  "cidade": "Curitiba",
+  "estado": "CWB",
+  "cep": "01310-111"
+}
+
 ### Atualizar
 PUT http://localhost:5209/api/PutEndereco=1
 Content-Type: application/json

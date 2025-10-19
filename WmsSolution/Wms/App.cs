@@ -29,7 +29,12 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// ---- LOGGING (antes do Build!)
+builder.Logging.ClearProviders();   // limpa provedores padrão
+builder.Logging.AddConsole();       // console já resolve seu endpoint de logs
+
 var app = builder.Build();
+
 
 // ▶ Swagger no Dev
 if (app.Environment.IsDevelopment())
@@ -68,5 +73,8 @@ app.MapEndpointsInventario();
 
 // ▶ Registra os endpoints de Entrada de Produto
 app.MapEndpointsEntradaProduto();
+
+
+        
 
 app.Run();

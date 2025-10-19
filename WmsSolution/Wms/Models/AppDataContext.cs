@@ -21,6 +21,7 @@ public class AppDataContext : DbContext
     public DbSet<Inventario> Inventario { get; set; }
     public DbSet<EntradaProduto> EntradaProduto {get ; set;}   
     public DbSet<SaidaProduto> SaidaProduto { get; set; }
+  
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -84,5 +85,6 @@ public class AppDataContext : DbContext
         // CONTROLE_SAÍDA - PK composta
         modelBuilder.Entity<SaidaProduto>()
             .HasKey(s => new { s.SaidaId, s.ProdutoId });
+
     }
 }

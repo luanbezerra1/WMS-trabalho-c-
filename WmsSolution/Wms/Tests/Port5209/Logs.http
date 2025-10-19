@@ -1,0 +1,3 @@
+// Log EntradaProduto
+POST http://localhost:5209/api/logs/entrada?fornecedorId=1&produtoId=1&quantidade=50&observacao=Chegada%20lote%20X
+

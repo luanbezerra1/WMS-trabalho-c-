@@ -35,3 +35,4 @@ Content-Type: application/json
 
 ### Deletar
 DELETE http://localhost:5209/api/DeleteUsuario=1
+
