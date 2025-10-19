@@ -19,13 +19,9 @@ public class AppDataContext : DbContext
     public DbSet<Cliente> Cliente { get; set; }
     public DbSet<Fornecedor> Fornecedor { get; set; }
     public DbSet<Inventario> Inventario { get; set; }
-    public DbSet<EntradaProduto> EntradaProduto {get ; set;}   
+    public DbSet<EntradaProduto> EntradaProduto { get; set; }
     public DbSet<SaidaProduto> SaidaProduto { get; set; }
-<<<<<<< HEAD
-  
-=======
     public DbSet<RelatorioLogs> RelatorioLogs { get; set; }
->>>>>>> master
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

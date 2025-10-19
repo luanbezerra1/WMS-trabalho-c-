@@ -1,0 +1,67 @@
+###############################################################################
+#                     ENDPOINTS - SAÍDA DE PRODUTO
+###############################################################################
+
+### Listar Todas as Saídas
+GET http://localhost:5209/api/GetSaidaProduto
+
+### Buscar Saída por ID
+GET http://localhost:5209/api/GetSaidaProdutoById=1
+
+### Registrar Saída de Produto
+POST http://localhost:5209/api/PostSaidaProduto
+Content-Type: application/json
+
+{
+  "clienteId": 1,
+  "produtoId": 1,
+  "quantidadeRetirada": 20,
+  "inventarioId": 1
+}
+
+### Registrar Saída Parcial do Mesmo Produto
+POST http://localhost:5209/api/PostSaidaProduto
+Content-Type: application/json
+
+{
+  "clienteId": 1,
+  "produtoId": 1,
+  "quantidadeRetirada": 10,
+  "inventarioId": 1
+}
+
+### ERRO: Produto Diferente na Posição
+POST http://localhost:5209/api/PostSaidaProduto
+Content-Type: application/json
+
+{
+  "clienteId": 1,
+  "produtoId": 2,
+  "quantidadeRetirada": 5,
+  "inventarioId": 1
+}
+
+### ERRO: Quantidade Maior que Disponível
+POST http://localhost:5209/api/PostSaidaProduto
+Content-Type: application/json
+
+{
+  "clienteId": 1,
+  "produtoId": 1,
+  "quantidadeRetirada": 100,
+  "inventarioId": 1
+}
+
+### Registrar Saída em Outra Posição
+POST http://localhost:5209/api/PostSaidaProduto
+Content-Type: application/json
+
+{
+  "clienteId": 2,
+  "produtoId": 2,
+  "quantidadeRetirada": 30,
+  "inventarioId": 2
+}
+
+### Deletar Registro de Saída
+DELETE http://localhost:5209/api/DeleteSaidaProduto=1&1
