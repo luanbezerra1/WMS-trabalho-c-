@@ -153,6 +153,16 @@ namespace Wms.Controllers
                     ctx.Inventario.Update(posicao);
                     ctx.SaveChanges();
 
+                    // 🔎 Log da SAÍDA de produto
+                    string mensagemLog =
+                        $"Saída ID {saidaId}: Produto '{produto.nomeProduto}' (ID: {produtoId}) - " +
+                        $"Quantidade retirada: {quantidadeRetirada} unidades - " +
+                        $"Cliente ID: {clienteId} - " +
+                        $"Posição: {posicao.NomePosicao} (ID: {inventarioId}) - " +
+                        $"Armazém ID: {posicao.ArmazemId}";
+
+                    RelatorioLogs.SalvarLog(ctx, mensagemLog);
+                    
                     return Results.Created("", new
                     {
                         saida = novaSaida,

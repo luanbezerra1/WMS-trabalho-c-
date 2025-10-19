@@ -12,5 +12,3 @@ Content-Type: application/json
 GET http://localhost:5209/api/GetLogById=1
 Content-Type: application/json
 
-###
-
