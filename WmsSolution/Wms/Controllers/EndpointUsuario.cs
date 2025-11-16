@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.Usuario.ToList());
                 }
 
-                return Results.NotFound("Nenhum usuário encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0001").Message);
             });
 
             app.MapGet("/api/GetUsuarioById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -58,7 +59,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Usuário não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0002").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -80,7 +81,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Usuário não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0002").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -104,14 +105,14 @@ namespace Wms.Controllers
 
                     if (resultado is not null)
                     {
-                        return Results.Conflict("Esse usuário já existe!");
+                        return Results.Conflict(EnumTipoException.ThrowException("MSG0003").Message);
                     }
                 }
 
                 Usuario? loginExistente = ctx.Usuario.FirstOrDefault(x => x.login == usuario.login);
                 if (loginExistente is not null)
                 {
-                    return Results.Conflict("Esse login já está em uso!");
+                    return Results.Conflict(EnumTipoException.ThrowException("MSG0004").Message);
                 }
                 
                 Usuario novoUsuario = Usuario.Criar(usuario.nome, usuario.login, usuario.senha, usuario.cargo);
@@ -139,7 +140,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Usuário não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0002").Message);
                 }
                 
                 Usuario.Deletar(ctx, id);
@@ -169,7 +170,7 @@ namespace Wms.Controllers
                 Usuario? loginExistente = ctx.Usuario.FirstOrDefault(x => x.login == usuarioAlterado.login && x.Id != id);
                 if (loginExistente is not null)
                 {
-                    return Results.Conflict("Esse login já está em uso!");
+                    return Results.Conflict(EnumTipoException.ThrowException("MSG0004").Message);
                 }
                 
                 resultado.Alterar(usuarioAlterado.nome, usuarioAlterado.login, usuarioAlterado.senha, usuarioAlterado.cargo);

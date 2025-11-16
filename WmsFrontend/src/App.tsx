@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import LoginForm from "./Views/LoginPage/Components/LoginForm";
+import OrdensPage from "./Views/OrdensPage/Components/OrdensPage";
+import EntradasPage from "./Views/EntradasPage/Components/EntradasPage";
+import SaidasPage from "./Views/SaidasPage/Components/SaidasPage";
+import "./index.css";
+
+function isAuthenticated() {
+  try {
+    return !!(localStorage.getItem("wms-user") || sessionStorage.getItem("wms-user"));
+  } catch {
+    return false;
+  }
+}
+
+function Protected({ children }: { children: React.ReactElement }) {
+  return isAuthenticated() ? children : <Navigate to="/" replace />;
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/ordens" element={<Protected><OrdensPage /></Protected>} />
+        <Route path="/entradas" element={<Protected><EntradasPage /></Protected>} />
+        <Route path="/saidas" element={<Protected><SaidasPage /></Protected>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

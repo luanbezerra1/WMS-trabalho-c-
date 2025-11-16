@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.EntradaProduto.ToList());
                 }
 
-                return Results.NotFound("Nenhuma entrada encontrada!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0045").Message);
             });
 
             app.MapGet("/api/GetEntradaProdutoById={entradaId}", ([FromRoute] int entradaId, [FromServices] AppDataContext ctx) =>
@@ -60,7 +61,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhuma entrada encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0045").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -96,38 +97,35 @@ namespace Wms.Controllers
                     Fornecedor? fornecedor = ctx.Fornecedor.Find(fornecedorId);
                     if (fornecedor is null)
                     {
-                        return Results.NotFound($"Fornecedor com ID {fornecedorId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0013", fornecedorId).Message);
                     }
 
                     Produto? produto = ctx.Produto.Find(produtoId);
                     if (produto is null)
                     {
-                        return Results.NotFound($"Produto com ID {produtoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0031", produtoId).Message);
                     }
 
                     Inventario? posicao = ctx.Inventario.Find(inventarioId);
                     if (posicao is null)
                     {
-                        return Results.NotFound($"Posição de inventário com ID {inventarioId} não encontrada!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0032", inventarioId).Message);
                     }
 
                     if (quantidadeRecebida <= 0)
                     {
-                        return Results.BadRequest("Quantidade recebida deve ser maior que zero!");
+                        return Results.BadRequest(EnumTipoException.ThrowException("MSG0034").Message);
                     }
 
                     Armazem? armazem = ctx.Armazem.Find(posicao.ArmazemId);
                     if (armazem is null)
                     {
-                        return Results.NotFound($"Armazém com ID {posicao.ArmazemId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0033", posicao.ArmazemId).Message);
                     }
 
                     if (posicao.ProdutoId.HasValue && posicao.ProdutoId.Value != produtoId)
                     {
-                        return Results.BadRequest(
-                            $"A posição {posicao.NomePosicao} já contém o produto ID {posicao.ProdutoId}! " +
-                            $"Uma posição só pode ter produtos de um mesmo ID. " +
-                            $"Escolha outra posição ou remova o produto atual.");
+                        return Results.BadRequest(EnumTipoException.ThrowException("MSG0063", posicao.NomePosicao, posicao.ProdutoId).Message);
                     }
 
                     int quantidadeAtual = posicao.Quantidade;
@@ -135,12 +133,8 @@ namespace Wms.Controllers
 
                     if (quantidadeTotal > armazem.ProdutoPosicao)
                     {
-                        return Results.BadRequest(
-                            $"A posição {posicao.NomePosicao} suporta no máximo {armazem.ProdutoPosicao} unidades. " +
-                            $"Quantidade atual: {quantidadeAtual}. " +
-                            $"Tentando adicionar: {quantidadeRecebida}. " +
-                            $"Total seria: {quantidadeTotal}. " +
-                            $"Escolha outra posição ou reduza a quantidade.");
+                        return Results.BadRequest(EnumTipoException.ThrowException("MSG0062",
+                            posicao.NomePosicao, armazem.ProdutoPosicao, quantidadeAtual, quantidadeRecebida, quantidadeTotal));
                     }
 
                     int entradaId = EntradaProduto.GerarEntradaId(ctx);
@@ -182,7 +176,7 @@ namespace Wms.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Results.BadRequest($"Erro ao processar entrada: {ex.Message}");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0038", ex.Message).Message);
                 }
             });
 
@@ -204,7 +198,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Entrada não encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0046").Message);
                 }
 
                 EntradaProduto.Deletar(ctx, entradaId, produtoId);

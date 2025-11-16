@@ -13,6 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 // ▶ DB: registra seu DbContext com SQLite (usa appsettings.json)
 builder.Services.AddDbContext<AppDataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// ▶ CORS: Acesso Total (conforme solicitado)
+builder.Services.AddCors(options =>
+    options.AddPolicy("Acesso Total",
+        configs => configs
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod())
+);
+
 // ▶ API + Swagger
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -31,6 +40,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// ▶ Garantir que o banco exista e esteja migrado
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDataContext>();
+    db.Database.Migrate();
+}
+
 // ▶ Swagger no Dev
 if (app.Environment.IsDevelopment())
 {
@@ -39,6 +55,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("Acesso Total");
 app.UseAuthorization();
 
 // ▶ Endpoint de teste + seus controllers

@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.Fornecedor.ToList());
                 }
 
-                return Results.NotFound("Nenhum fornecedor encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0014").Message);
             });
 
             app.MapGet("/api/GetFornecedorById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -58,7 +59,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Fornecedor não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0015").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -80,7 +81,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Fornecedor não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0015").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -104,19 +105,19 @@ namespace Wms.Controllers
 
                     if (resultado is not null)
                     {
-                        return Results.Conflict("Esse fornecedor já existe!");
+                        return Results.Conflict(EnumTipoException.ThrowException("MSG0016").Message);
                     }
                 }
 
                 if (string.IsNullOrEmpty(fornecedor.cnpj))
                 {
-                    return Results.BadRequest("Fornecedor deve ter CNPJ informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0017").Message);
                 }
 
                 Fornecedor? cnpjExistente = ctx.Fornecedor.FirstOrDefault(x => x.cnpj == fornecedor.cnpj);
                 if (cnpjExistente is not null)
                 {
-                    return Results.Conflict("Esse CNPJ já está cadastrado!");
+                    return Results.Conflict(EnumTipoException.ThrowException("MSG0018").Message);
                 }
 
                 if (fornecedor.EnderecoId > 0)          
@@ -124,7 +125,7 @@ namespace Wms.Controllers
                     Endereco? enderecoExistente = ctx.Endereco.Find(fornecedor.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {fornecedor.EnderecoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0019", fornecedor.EnderecoId).Message);
                     }
                 }
                 
@@ -153,7 +154,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Fornecedor não encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0015").Message);
                 }
                 
                 Fornecedor.Deletar(ctx, id);
@@ -182,13 +183,13 @@ namespace Wms.Controllers
 
                 if (string.IsNullOrEmpty(fornecedorAlterado.cnpj))
                 {
-                    return Results.BadRequest("Fornecedor deve ter CNPJ informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0017").Message);
                 }
 
                 Fornecedor? cnpjExistente = ctx.Fornecedor.FirstOrDefault(x => x.cnpj == fornecedorAlterado.cnpj && x.Id != id);
                 if (cnpjExistente is not null)
                 {
-                    return Results.Conflict("Esse CNPJ já está cadastrado!");
+                    return Results.Conflict(EnumTipoException.ThrowException("MSG0018").Message);
                 }
 
                 if (fornecedorAlterado.EnderecoId > 0)
@@ -196,7 +197,7 @@ namespace Wms.Controllers
                     Endereco? enderecoExistente = ctx.Endereco.Find(fornecedorAlterado.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {fornecedorAlterado.EnderecoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0019", fornecedorAlterado.EnderecoId).Message);
                     }
                 }
                 

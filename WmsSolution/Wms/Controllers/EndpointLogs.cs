@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.RelatorioLogs.OrderByDescending(l => l.DataHora).ToList());
                 }
 
-                return Results.NotFound("Nenhum log encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0040").Message);
             });
 
             app.MapGet("/api/GetLogById={logId}", ([FromRoute] int logId, [FromServices] AppDataContext ctx) =>
@@ -58,7 +59,7 @@ namespace Wms.Controllers
 
                 if (log is null)
                 {
-                    return Results.NotFound("Log não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0041").Message);
                 }
 
                 return Results.Ok(log);

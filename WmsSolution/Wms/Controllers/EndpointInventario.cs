@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -54,7 +55,7 @@ namespace Wms.Controllers
                     return Results.Ok(inventarios);
                 }
 
-                return Results.NotFound("Nenhum inventário encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0023").Message);
             });
 
             app.MapGet("/api/GetInventarioById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -87,7 +88,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Inventário não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0024").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -123,7 +124,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhum inventário encontrado para esse armazém!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0025").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -157,7 +158,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhum inventário encontrado para esse produto!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0026").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -191,7 +192,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhuma posição vazia encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0027").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -213,12 +214,12 @@ namespace Wms.Controllers
 
                 if (posicao is null)
                 {
-                    return Results.NotFound("Posição não encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0028").Message);
                 }
 
                 if (posicao.ProdutoId is not null)
                 {
-                    return Results.BadRequest("Esta posição já está ocupada! Use o endpoint de atualizar quantidade.");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0029").Message);
                 }
 
                 int produtoId = (int)dados.produtoId;
@@ -227,12 +228,12 @@ namespace Wms.Controllers
                 Produto? produtoExistente = ctx.Produto.Find(produtoId);
                 if (produtoExistente is null)
                 {
-                    return Results.NotFound($"Produto com ID {produtoId} não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0031", produtoId).Message);
                 }
 
                 if (quantidade <= 0)
                 {
-                    return Results.BadRequest("Quantidade deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0030").Message);
                 }
 
                 posicao.AlocarProduto(produtoId, quantidade);
@@ -259,19 +260,19 @@ namespace Wms.Controllers
 
                 if (posicao is null)
                 {
-                    return Results.NotFound("Posição não encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0028").Message);
                 }
 
                 if (posicao.ProdutoId is null)
                 {
-                    return Results.BadRequest("Esta posição está vazia! Use o endpoint de alocar produto.");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0042").Message);
                 }
 
                 int quantidade = (int)dados.quantidade;
 
                 if (quantidade < 0)
                 {
-                    return Results.BadRequest("Quantidade não pode ser negativa!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0043").Message);
                 }
 
                 posicao.AtualizarQuantidade(quantidade);
@@ -298,12 +299,12 @@ namespace Wms.Controllers
 
                 if (posicao is null)
                 {
-                    return Results.NotFound("Posição não encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0028").Message);
                 }
 
                 if (posicao.ProdutoId is null)
                 {
-                    return Results.BadRequest("Esta posição já está vazia!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0044").Message);
                 }
 
                 posicao.RemoverProduto();

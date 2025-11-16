@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.Armazem.ToList());
                 }
 
-                return Results.NotFound("Nenhum armazém encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0055").Message);
             });
 
             app.MapGet("/api/GetArmazemById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -58,7 +59,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Armazém não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0056").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -80,7 +81,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhum armazém encontrado com esse status!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0057").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -104,13 +105,13 @@ namespace Wms.Controllers
 
                     if (resultado is not null)
                     {
-                        return Results.Conflict("Esse armazém já existe!");
+                        return Results.Conflict(EnumTipoException.ThrowException("MSG0058").Message);
                     }
                 }
 
                 if (string.IsNullOrEmpty(armazem.nomeArmazem))
                 {
-                    return Results.BadRequest("Nome do armazém deve ser informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0059").Message);
                 }
 
                 if (armazem.EnderecoId > 0)
@@ -118,18 +119,18 @@ namespace Wms.Controllers
                     Endereco? enderecoExistente = ctx.Endereco.Find(armazem.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {armazem.EnderecoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0019", armazem.EnderecoId).Message);
                     }
                 }
 
                 if (armazem.Posicoes <= 0)
                 {
-                    return Results.BadRequest("Número de posições deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0060").Message);
                 }
 
                 if (armazem.ProdutoPosicao <= 0)
                 {
-                    return Results.BadRequest("Número de produtos por posição deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0061").Message);
                 }
                 
                 Armazem novoArmazem = Armazem.Criar(armazem.nomeArmazem, armazem.status, armazem.Posicoes, armazem.ProdutoPosicao, armazem.EnderecoId);
@@ -167,12 +168,12 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Armazém não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0056").Message);
                 }
 
                 if (string.IsNullOrEmpty(armazemAlterado.nomeArmazem))
                 {
-                    return Results.BadRequest("Nome do armazém deve ser informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0059").Message);
                 }
 
                 if (armazemAlterado.EnderecoId > 0)
@@ -180,18 +181,18 @@ namespace Wms.Controllers
                     Endereco? enderecoExistente = ctx.Endereco.Find(armazemAlterado.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {armazemAlterado.EnderecoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0019", armazemAlterado.EnderecoId).Message);
                     }
                 }
 
                 if (armazemAlterado.Posicoes <= 0)
                 {
-                    return Results.BadRequest("Número de posições deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0060").Message);
                 }
 
                 if (armazemAlterado.ProdutoPosicao <= 0)
                 {
-                    return Results.BadRequest("Número de produtos por posição deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0061").Message);
                 }
                 
                 resultado.Alterar(armazemAlterado.nomeArmazem, armazemAlterado.status, armazemAlterado.Posicoes, armazemAlterado.ProdutoPosicao, armazemAlterado.EnderecoId);
@@ -218,7 +219,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Armazém não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0056").Message);
                 }
                 
                 Armazem.Deletar(ctx, id);

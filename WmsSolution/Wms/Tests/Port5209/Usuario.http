@@ -12,10 +12,10 @@ POST http://localhost:5209/api/PostUsuario
 Content-Type: application/json
 
 {
-  "nome": "Administrador do Sistema",
+  "nome": "admin",
   "login": "admin",
-  "senha": "admin123",
-  "cargo": "Administrador"
+  "senha": "admin",
+  "cargo": "admin"
 }
 
 ### Atualizar

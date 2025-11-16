@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.Endereco.ToList());
                 }
 
-                return Results.NotFound("Nenhum endereço encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0052").Message);
             });
 
             app.MapGet("/api/GetEnderecoById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -58,7 +59,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Endereço não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0053").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -82,7 +83,7 @@ namespace Wms.Controllers
 
                     if (resultado is not null)
                     {
-                        return Results.Conflict("Esse endereço já existe!");
+                        return Results.Conflict(EnumTipoException.ThrowException("MSG0054").Message);
                     }
                 }
                 
@@ -110,7 +111,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Endereço não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0053").Message);
                 }
                 
                 resultado.Alterar(enderecoAlterado.Rua, enderecoAlterado.Numero, enderecoAlterado.Complemento, enderecoAlterado.Bairro, enderecoAlterado.Cidade, enderecoAlterado.Estado, enderecoAlterado.Cep);
@@ -137,7 +138,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Endereço não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0053").Message);
                 }
                 
                 Endereco.Deletar(ctx, id);

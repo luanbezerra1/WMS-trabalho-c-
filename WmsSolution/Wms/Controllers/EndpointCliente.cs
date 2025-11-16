@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.Cliente.ToList());
                 }
 
-                return Results.NotFound("Nenhum cliente encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0020").Message);
             });
 
             app.MapGet("/api/GetClienteById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -58,7 +59,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Cliente não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0021").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -80,7 +81,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Cliente não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0021").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -104,19 +105,19 @@ namespace Wms.Controllers
 
                     if (resultado is not null)
                     {
-                        return Results.Conflict("Esse cliente já existe!");
+                        return Results.Conflict(EnumTipoException.ThrowException("MSG0050").Message);
                     }
                 }
 
                 if (string.IsNullOrEmpty(cliente.Cpf))
                 {
-                    return Results.BadRequest("Cliente deve ter CPF informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0051").Message);
                 }
 
                 Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == cliente.Cpf);
                 if (cpfExistente is not null)
                 {
-                    return Results.Conflict("Esse CPF já está cadastrado!");
+                    return Results.Conflict(EnumTipoException.ThrowException("MSG0022").Message);
                 }
 
                 if (cliente.EnderecoId > 0)
@@ -124,7 +125,7 @@ namespace Wms.Controllers
                     Endereco? enderecoExistente = ctx.Endereco.Find(cliente.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {cliente.EnderecoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0019", cliente.EnderecoId).Message);
                     }
                 }
                 
@@ -153,18 +154,18 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Cliente não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0021").Message);
                 }
 
                 if (string.IsNullOrEmpty(clienteAlterado.Cpf))
                 {
-                    return Results.BadRequest("Cliente deve ter CPF informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0051").Message);
                 }
 
                 Cliente? cpfExistente = ctx.Cliente.FirstOrDefault(x => x.Cpf == clienteAlterado.Cpf && x.Id != id);
                 if (cpfExistente is not null)
                 {
-                    return Results.Conflict("Esse CPF já está cadastrado!");
+                    return Results.Conflict(EnumTipoException.ThrowException("MSG0022").Message);
                 }
 
                 if (clienteAlterado.EnderecoId > 0)
@@ -172,7 +173,7 @@ namespace Wms.Controllers
                     Endereco? enderecoExistente = ctx.Endereco.Find(clienteAlterado.EnderecoId);
                     if (enderecoExistente is null)
                     {
-                        return Results.NotFound($"Endereço com ID {clienteAlterado.EnderecoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0019", clienteAlterado.EnderecoId).Message);
                     }
                 }
                 

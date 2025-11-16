@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.SaidaProduto.ToList());
                 }
 
-                return Results.NotFound("Nenhuma saída encontrada!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0047").Message);
             });
 
             app.MapGet("/api/GetSaidaProdutoById/{saidaId}",
@@ -61,7 +62,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhuma saída encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0047").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -97,34 +98,34 @@ namespace Wms.Controllers
                     Cliente? cliente = ctx.Cliente.Find(clienteId);
                     if (cliente is null)
                     {
-                        return Results.NotFound($"Cliente com ID {clienteId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0048", clienteId).Message);
                     }
 
                     Produto? produto = ctx.Produto.Find(produtoId);
                     if (produto is null)
                     {
-                        return Results.NotFound($"Produto com ID {produtoId} não encontrado!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0031", produtoId).Message);
                     }
 
                     Inventario? posicao = ctx.Inventario.Find(inventarioId);
                     if (posicao is null)
                     {
-                        return Results.NotFound($"Posição de inventário com ID {inventarioId} não encontrada!");
+                        return Results.NotFound(EnumTipoException.ThrowException("MSG0032", inventarioId).Message);
                     }
 
                     if (quantidadeRetirada <= 0)
                     {
-                        return Results.BadRequest("Quantidade retirada deve ser maior que zero!");
+                        return Results.BadRequest(EnumTipoException.ThrowException("MSG0035").Message);
                     }
 
                     if (posicao.ProdutoId != produtoId)
                     {
-                        return Results.BadRequest($"A posição {posicao.NomePosicao} não contém o produto ID {produtoId}!");
+                        return Results.BadRequest(EnumTipoException.ThrowException("MSG0036", posicao.NomePosicao, produtoId).Message);
                     }
 
                     if (posicao.Quantidade < quantidadeRetirada)
                     {
-                        return Results.BadRequest($"Quantidade insuficiente! Na posição há apenas {posicao.Quantidade} unidades.");
+                        return Results.BadRequest(EnumTipoException.ThrowException("MSG0037", posicao.Quantidade).Message);
                     }
 
                     int saidaId = SaidaProduto.GerarSaidaId(ctx);
@@ -162,7 +163,7 @@ namespace Wms.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Results.BadRequest($"Erro ao processar saída: {ex.Message}");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0039", ex.Message).Message);
                 }
             });
 
@@ -184,7 +185,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Saída não encontrada!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0049").Message);
                 }
 
                 SaidaProduto.Deletar(ctx, saidaId, produtoId);

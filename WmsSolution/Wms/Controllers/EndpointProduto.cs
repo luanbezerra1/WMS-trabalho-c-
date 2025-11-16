@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Wms.Models;
+using Wms.Enums;
 
 namespace Wms.Controllers
 {
@@ -39,7 +40,7 @@ namespace Wms.Controllers
                     return Results.Ok(ctx.Produto.ToList());
                 }
 
-                return Results.NotFound("Nenhum produto encontrado!");
+                return Results.NotFound(EnumTipoException.ThrowException("MSG0005").Message);
             });
 
             app.MapGet("/api/GetProdutoById={id}", ([FromRoute] int id, [FromServices] AppDataContext ctx) =>
@@ -58,7 +59,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Produto não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0006").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -80,7 +81,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhum produto encontrado para essa categoria!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0007").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -102,7 +103,7 @@ namespace Wms.Controllers
 
                 if (!resultado.Any())
                 {
-                    return Results.NotFound("Nenhum produto encontrado para esse fornecedor!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0008").Message);
                 }
 
                 return Results.Ok(resultado);
@@ -126,29 +127,29 @@ namespace Wms.Controllers
 
                     if (resultado is not null)
                     {
-                        return Results.Conflict("Esse produto já existe!");
+                        return Results.Conflict(EnumTipoException.ThrowException("MSG0009").Message);
                     }
                 }
 
                 if (string.IsNullOrEmpty(produto.nomeProduto))
                 {
-                    return Results.BadRequest("Nome do produto deve ser informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0010").Message);
                 }
 
                 Fornecedor? fornecedorExistente = ctx.Fornecedor.Find(produto.fornecedorId);
                 if (fornecedorExistente is null)
                 {
-                    return Results.NotFound($"Fornecedor com ID {produto.fornecedorId} não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0013", produto.fornecedorId).Message);
                 }
 
                 if (produto.preco <= 0)
                 {
-                    return Results.BadRequest("Preço do produto deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0011").Message);
                 }
 
                 if (produto.lote <= 0)
                 {
-                    return Results.BadRequest("Lote do produto deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0012").Message);
                 }
                 
                 Produto novoProduto = Produto.Criar(produto.nomeProduto, produto.descricao, produto.lote, produto.fornecedorId, produto.preco, produto.categoria);
@@ -176,7 +177,7 @@ namespace Wms.Controllers
 
                 if (resultado is null)
                 {
-                    return Results.NotFound("Produto não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0006").Message);
                 }
                 
                 Produto.Deletar(ctx, id);
@@ -205,23 +206,23 @@ namespace Wms.Controllers
 
                 if (string.IsNullOrEmpty(produtoAlterado.nomeProduto))
                 {
-                    return Results.BadRequest("Nome do produto deve ser informado!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0010").Message);
                 }
 
                 Fornecedor? fornecedorExistente = ctx.Fornecedor.Find(produtoAlterado.fornecedorId);
                 if (fornecedorExistente is null)
                 {
-                    return Results.NotFound($"Fornecedor com ID {produtoAlterado.fornecedorId} não encontrado!");
+                    return Results.NotFound(EnumTipoException.ThrowException("MSG0013", produtoAlterado.fornecedorId).Message);
                 }
 
                 if (produtoAlterado.preco <= 0)
                 {
-                    return Results.BadRequest("Preço do produto deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0011").Message);
                 }
 
                 if (produtoAlterado.lote <= 0)
                 {
-                    return Results.BadRequest("Lote do produto deve ser maior que zero!");
+                    return Results.BadRequest(EnumTipoException.ThrowException("MSG0012").Message);
                 }
                 
                 resultado.Alterar(produtoAlterado.nomeProduto, produtoAlterado.descricao, produtoAlterado.lote, produtoAlterado.fornecedorId, produtoAlterado.preco, produtoAlterado.categoria);
