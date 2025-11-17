@@ -1,9 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginForm from "./Views/LoginPage/Components/LoginForm";
-import OrdensPage from "./Views/OrdensPage/Components/OrdensPage";
-import EntradasPage from "./Views/EntradasPage/Components/EntradasPage";
-import SaidasPage from "./Views/SaidasPage/Components/SaidasPage";
+import HomePage from "./Views/HomePage/Components/HomePage";
+
 import "./index.css";
 
 function isAuthenticated() {
@@ -15,7 +14,9 @@ function isAuthenticated() {
 }
 
 function Protected({ children }: { children: React.ReactElement }) {
-  return isAuthenticated() ? children : <Navigate to="/" replace />;
+  const auth = isAuthenticated();
+  console.log('Protected route - authenticated:', auth);
+  return auth ? children : <Navigate to="/" replace />;
 }
 
 function App() {
@@ -23,9 +24,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginForm />} />
-        <Route path="/ordens" element={<Protected><OrdensPage /></Protected>} />
-        <Route path="/entradas" element={<Protected><EntradasPage /></Protected>} />
-        <Route path="/saidas" element={<Protected><SaidasPage /></Protected>} />
+        <Route path="/home" element={<Protected><HomePage /></Protected>} />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
