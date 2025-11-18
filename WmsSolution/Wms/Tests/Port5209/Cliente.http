@@ -12,11 +12,11 @@ POST http://localhost:5209/api/PostCliente
 Content-Type: application/json
 
 {
-  "nome": "João Silva Santos",
-  "email": "joao.silva@email.com",
+  "nome": "Matheus da Silva Santos",
+  "email": "matheus.silva@email.com",
   "telefone": "(11) 98765-4321",
-  "cpf": "123.456.789-00",
-  "enderecoId": 1
+  "cpf": "112.456.789-00",
+  "enderecoId": 0
 }
 
 ### Atualizar

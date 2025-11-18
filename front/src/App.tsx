@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Endereco from './Views/Endereco';
 import Cliente from './Views/Cliente';
 import Fornecedor from './Views/Fornecedor';
+import Produto from './Views/Produto';
 import './App.css';
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
             <li>
               <Link to="/fornecedor">Fornecedores</Link>
             </li>
+            <li>
+              <Link to="/produto">Produtos</Link>
+            </li>
           </ul>
         </nav>
 
@@ -28,6 +32,7 @@ function App() {
           <Route path="/endereco" element={<Endereco />} />
           <Route path="/cliente" element={<Cliente />} />
           <Route path="/fornecedor" element={<Fornecedor />} />
+          <Route path="/produto" element={<Produto />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,0 +1,8 @@
+/* Estilos específicos da tela de Produto */
+
+#componente_listar_produtos {
+  padding: 30px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  color: #1e3a8a;
+}
