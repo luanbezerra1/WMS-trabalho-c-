@@ -4,6 +4,7 @@ import Endereco from './Views/Endereco';
 import Cliente from './Views/Cliente';
 import Fornecedor from './Views/Fornecedor';
 import Produto from './Views/Produto';
+import Entrada from './Views/Entrada';
 import './App.css';
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
             <li>
               <Link to="/produto">Produtos</Link>
             </li>
+            <li>
+              <Link to="/entrada">Entrada Produto</Link>
+            </li>
           </ul>
         </nav>
 
@@ -33,6 +37,7 @@ function App() {
           <Route path="/cliente" element={<Cliente />} />
           <Route path="/fornecedor" element={<Fornecedor />} />
           <Route path="/produto" element={<Produto />} />
+          <Route path="/entrada" element={<Entrada />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -11,14 +11,13 @@ interface FormProdutoProps {
 }
 
 function FormProduto({ produto, onClose, onSuccess, isEdit }: FormProdutoProps) {
-  const [formData, setFormData] = useState<Omit<Produto, "id">>({
+  const [formData, setFormData] = useState({
     nomeProduto: "",
     descricao: "",
     lote: 0,
     fornecedorId: 0,
     preco: 0,
-    categoria: "",
-    criadoEm: ""
+    categoria: ""
   });
 
   const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
@@ -49,8 +48,7 @@ function FormProduto({ produto, onClose, onSuccess, isEdit }: FormProdutoProps) 
         lote: produto.lote,
         fornecedorId: produto.fornecedorId,
         preco: produto.preco,
-        categoria: produto.categoria,
-        criadoEm: produto.criadoEm
+        categoria: produto.categoria
       });
     }
   }, [produto, isEdit]);
