@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from "react";
-import EnderecoModel from "../Models/Endereco";
+import UsuarioModel from "../Models/Usuario";
 import axios from "axios";
 import "../Styles/Main.css";
-import "../Styles/Endereco.css";
-import FormEndereco from "./Components/FormEndereco";
+import "../Styles/Usuario.css";
+import FormUsuario from "./Components/FormUsuario";
 import { useRefresh } from "../Contexts/RefreshContext";
 
-function Endereco() {
-  const [enderecos, setEnderecos] = useState<EnderecoModel[]>([]);
+function Usuario() {
+  const [usuarios, setUsuarios] = useState<UsuarioModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [enderecoEditando, setEnderecoEditando] = useState<EnderecoModel | null>(null);
+  const [usuarioEditando, setUsuarioEditando] = useState<UsuarioModel | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const { setRefreshFunction } = useRefresh();
 
-  async function listarEnderecosAPI() {
+  async function listarUsuariosAPI() {
     try {
       setLoading(true);
       setError(null);
-      const resposta = await axios.get<EnderecoModel[]>(
-        "http://localhost:5209/api/GetEndereco"
+      const resposta = await axios.get<UsuarioModel[]>(
+        "http://localhost:5209/api/GetUsuario"
       );
       const dados = resposta.data;
-      setEnderecos(dados);
+      setUsuarios(dados);
       setLoading(false);
     } catch (error: any) {
       console.log("Erro na requisição: " + error);
-      setError("Erro ao carregar endereços. Verifique se o servidor está rodando.");
+      setError("Erro ao carregar usuários. Verifique se o servidor está rodando.");
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    listarEnderecosAPI();
-    setRefreshFunction(() => listarEnderecosAPI);
+    listarUsuariosAPI();
+    setRefreshFunction(() => listarUsuariosAPI);
     
     return () => {
       setRefreshFunction(null);
@@ -42,41 +42,41 @@ function Endereco() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function deletarEndereco(id: number) {
-    if (window.confirm("Tem certeza que deseja excluir este endereço?")) {
+  async function deletarUsuario(id: number) {
+    if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
       try {
-        await axios.delete(`http://localhost:5209/api/DeleteEndereco=${id}`);
-        listarEnderecosAPI(); // Recarrega a lista após deletar
+        await axios.delete(`http://localhost:5209/api/DeleteUsuario=${id}`);
+        listarUsuariosAPI();
       } catch (error) {
-        console.log("Erro ao deletar endereço: " + error);
-        alert("Erro ao deletar endereço. Tente novamente.");
+        console.log("Erro ao deletar usuário: " + error);
+        alert("Erro ao deletar usuário. Tente novamente.");
       }
     }
   }
 
-  function editarEndereco(id: number) {
-    const endereco = enderecos.find((e) => e.id === id);
-    if (endereco) {
-      setEnderecoEditando(endereco);
+  function editarUsuario(id: number) {
+    const usuario = usuarios.find((u) => u.id === id);
+    if (usuario) {
+      setUsuarioEditando(usuario);
       setIsEditMode(true);
       setShowForm(true);
     }
   }
 
-  function adicionarEndereco() {
-    setEnderecoEditando(null);
+  function adicionarUsuario() {
+    setUsuarioEditando(null);
     setIsEditMode(false);
     setShowForm(true);
   }
 
   function fecharFormulario() {
     setShowForm(false);
-    setEnderecoEditando(null);
+    setUsuarioEditando(null);
     setIsEditMode(false);
   }
 
   function handleFormSuccess() {
-    listarEnderecosAPI();
+    listarUsuariosAPI();
     fecharFormulario();
   }
 
@@ -84,7 +84,7 @@ function Endereco() {
     return (
       <div id="componente_listar_enderecos">
         <div className="header-container">
-          <h1>Listar Endereços</h1>
+          <h1>Listar Usuários</h1>
         </div>
         <div className="loading-container">
           <p>Carregando...</p>
@@ -96,8 +96,8 @@ function Endereco() {
   return (
     <>
       {showForm && (
-        <FormEndereco
-          endereco={enderecoEditando}
+        <FormUsuario
+          usuario={usuarioEditando}
           onClose={fecharFormulario}
           onSuccess={handleFormSuccess}
           isEdit={isEditMode}
@@ -106,8 +106,8 @@ function Endereco() {
 
       <div id="componente_listar_enderecos">
         <div className="header-container">
-          <h1>Listar Endereços</h1>
-          <button className="btn-adicionar" onClick={adicionarEndereco}>
+          <h1>Listar Usuários</h1>
+          <button className="btn-adicionar" onClick={adicionarUsuario}>
             + Adicionar
           </button>
         </div>
@@ -122,44 +122,36 @@ function Endereco() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Rua</th>
-            <th>Número</th>
-            <th>Complemento</th>
-            <th>Bairro</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>CEP</th>
+            <th>Nome</th>
+            <th>Login</th>
+            <th>Cargo</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {enderecos.length === 0 ? (
+          {usuarios.length === 0 ? (
             <tr>
-              <td colSpan={9} className="no-data">
-                Nenhum endereço encontrado
+              <td colSpan={5} className="no-data">
+                Nenhum usuário encontrado
               </td>
             </tr>
           ) : (
-            enderecos.map((endereco) => (
-              <tr key={endereco.id}>
-                <td>{endereco.id}</td>
-                <td>{endereco.rua}</td>
-                <td>{endereco.numero}</td>
-                <td>{endereco.complemento}</td>
-                <td>{endereco.bairro}</td>
-                <td>{endereco.cidade}</td>
-                <td>{endereco.estado}</td>
-                <td>{endereco.cep}</td>
+            usuarios.map((usuario) => (
+              <tr key={usuario.id}>
+                <td>{usuario.id}</td>
+                <td>{usuario.nome}</td>
+                <td>{usuario.login}</td>
+                <td>{usuario.cargo}</td>
                 <td className="acoes">
                   <button
                     className="btn-editar"
-                    onClick={() => editarEndereco(endereco.id)}
+                    onClick={() => editarUsuario(usuario.id)}
                   >
                     Editar
                   </button>
                   <button
                     className="btn-apagar"
-                    onClick={() => deletarEndereco(endereco.id)}
+                    onClick={() => deletarUsuario(usuario.id)}
                   >
                     Apagar
                   </button>
@@ -174,5 +166,5 @@ function Endereco() {
   );
 }
 
-export default Endereco;
+export default Usuario;
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import "../Styles/Main.css";
 import "../Styles/Cliente.css";
 import FormCliente from "./Components/FormCliente";
+import { useRefresh } from "../Contexts/RefreshContext";
 
 function Cliente() {
   const [clientes, setClientes] = useState<ClienteModel[]>([]);
@@ -12,45 +13,7 @@ function Cliente() {
   const [showForm, setShowForm] = useState(false);
   const [clienteEditando, setClienteEditando] = useState<ClienteModel | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    async function loadData() {
-      try {
-        setLoading(true);
-        setError(null);
-        const resposta = await axios.get<ClienteModel[]>(
-          "http://localhost:5209/api/GetCliente"
-        );
-        if (isMounted) {
-          const dados = resposta.data;
-          setClientes(dados);
-          setLoading(false);
-        }
-      } catch (error: any) {
-        console.log("Erro na requisição: " + error);
-        if (isMounted) {
-          setError("Erro ao carregar clientes. Verifique se o servidor está rodando.");
-          setLoading(false);
-        }
-      }
-    }
-
-    loadData();
-
-    const timeout = setTimeout(() => {
-      if (isMounted) {
-        setLoading(false);
-        setError("Timeout ao carregar clientes. Verifique se o servidor está rodando.");
-      }
-    }, 10000);
-
-    return () => {
-      isMounted = false;
-      clearTimeout(timeout);
-    };
-  }, []);
+  const { setRefreshFunction } = useRefresh();
 
   async function listarClientesAPI() {
     try {
@@ -68,6 +31,16 @@ function Cliente() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    listarClientesAPI();
+    setRefreshFunction(() => listarClientesAPI);
+    
+    return () => {
+      setRefreshFunction(null);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function deletarCliente(id: number) {
     if (window.confirm("Tem certeza que deseja excluir este cliente?")) {

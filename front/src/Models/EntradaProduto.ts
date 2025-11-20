@@ -1,8 +1,7 @@
-export default interface Entrada{
+export default interface EntradaProduto {
     entradaId: number;
     fornecedorId: number;
     produtoId: number;
     quantidadeRecebida: number;
-    dataentrada: Date;
-    inventarioId: number;
+    dataEntrada: string;
 }

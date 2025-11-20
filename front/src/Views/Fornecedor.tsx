@@ -4,6 +4,7 @@ import axios from "axios";
 import "../Styles/Main.css";
 import "../Styles/Fornecedor.css";
 import FormFornecedor from "./Components/FormFornecedor";
+import { useRefresh } from "../Contexts/RefreshContext";
 
 function Fornecedor() {
   const [fornecedores, setFornecedores] = useState<FornecedorModel[]>([]);
@@ -12,45 +13,7 @@ function Fornecedor() {
   const [showForm, setShowForm] = useState(false);
   const [fornecedorEditando, setFornecedorEditando] = useState<FornecedorModel | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    async function loadData() {
-      try {
-        setLoading(true);
-        setError(null);
-        const resposta = await axios.get<FornecedorModel[]>(
-          "http://localhost:5209/api/GetFornecedor"
-        );
-        if (isMounted) {
-          const dados = resposta.data;
-          setFornecedores(dados);
-          setLoading(false);
-        }
-      } catch (error: any) {
-        console.log("Erro na requisição: " + error);
-        if (isMounted) {
-          setError("Erro ao carregar fornecedores. Verifique se o servidor está rodando.");
-          setLoading(false);
-        }
-      }
-    }
-
-    loadData();
-
-    const timeout = setTimeout(() => {
-      if (isMounted) {
-        setLoading(false);
-        setError("Timeout ao carregar fornecedores. Verifique se o servidor está rodando.");
-      }
-    }, 10000);
-
-    return () => {
-      isMounted = false;
-      clearTimeout(timeout);
-    };
-  }, []);
+  const { setRefreshFunction } = useRefresh();
 
   async function listarFornecedoresAPI() {
     try {
@@ -68,6 +31,16 @@ function Fornecedor() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    listarFornecedoresAPI();
+    setRefreshFunction(() => listarFornecedoresAPI);
+    
+    return () => {
+      setRefreshFunction(null);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function deletarFornecedor(id: number) {
     if (window.confirm("Tem certeza que deseja excluir este fornecedor?")) {

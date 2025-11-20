@@ -1,0 +1,9 @@
+/* Estilos específicos da tela de Logs */
+
+#componente_listar_enderecos {
+  padding: 30px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  color: #1e3a8a;
+}
+

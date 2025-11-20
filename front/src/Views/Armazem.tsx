@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from "react";
-import EnderecoModel from "../Models/Endereco";
+import ArmazemModel from "../Models/Armazem";
 import axios from "axios";
 import "../Styles/Main.css";
-import "../Styles/Endereco.css";
-import FormEndereco from "./Components/FormEndereco";
+import "../Styles/Armazem.css";
+import FormArmazem from "./Components/FormArmazem";
 import { useRefresh } from "../Contexts/RefreshContext";
 
-function Endereco() {
-  const [enderecos, setEnderecos] = useState<EnderecoModel[]>([]);
+function Armazem() {
+  const [armazens, setArmazens] = useState<ArmazemModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [enderecoEditando, setEnderecoEditando] = useState<EnderecoModel | null>(null);
+  const [armazemEditando, setArmazemEditando] = useState<ArmazemModel | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const { setRefreshFunction } = useRefresh();
 
-  async function listarEnderecosAPI() {
+  async function listarArmazensAPI() {
     try {
       setLoading(true);
       setError(null);
-      const resposta = await axios.get<EnderecoModel[]>(
-        "http://localhost:5209/api/GetEndereco"
+      const resposta = await axios.get<ArmazemModel[]>(
+        "http://localhost:5209/api/GetArmazem"
       );
       const dados = resposta.data;
-      setEnderecos(dados);
+      setArmazens(dados);
       setLoading(false);
     } catch (error: any) {
       console.log("Erro na requisição: " + error);
-      setError("Erro ao carregar endereços. Verifique se o servidor está rodando.");
+      setError("Erro ao carregar armazéns. Verifique se o servidor está rodando.");
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    listarEnderecosAPI();
-    setRefreshFunction(() => listarEnderecosAPI);
+    listarArmazensAPI();
+    setRefreshFunction(() => listarArmazensAPI);
     
     return () => {
       setRefreshFunction(null);
@@ -42,41 +42,41 @@ function Endereco() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function deletarEndereco(id: number) {
-    if (window.confirm("Tem certeza que deseja excluir este endereço?")) {
+  async function deletarArmazem(id: number) {
+    if (window.confirm("Tem certeza que deseja excluir este armazém? Todas as posições serão removidas.")) {
       try {
-        await axios.delete(`http://localhost:5209/api/DeleteEndereco=${id}`);
-        listarEnderecosAPI(); // Recarrega a lista após deletar
+        await axios.delete(`http://localhost:5209/api/DeleteArmazem=${id}`);
+        listarArmazensAPI();
       } catch (error) {
-        console.log("Erro ao deletar endereço: " + error);
-        alert("Erro ao deletar endereço. Tente novamente.");
+        console.log("Erro ao deletar armazém: " + error);
+        alert("Erro ao deletar armazém. Tente novamente.");
       }
     }
   }
 
-  function editarEndereco(id: number) {
-    const endereco = enderecos.find((e) => e.id === id);
-    if (endereco) {
-      setEnderecoEditando(endereco);
+  function editarArmazem(id: number) {
+    const armazem = armazens.find((a) => a.id === id);
+    if (armazem) {
+      setArmazemEditando(armazem);
       setIsEditMode(true);
       setShowForm(true);
     }
   }
 
-  function adicionarEndereco() {
-    setEnderecoEditando(null);
+  function adicionarArmazem() {
+    setArmazemEditando(null);
     setIsEditMode(false);
     setShowForm(true);
   }
 
   function fecharFormulario() {
     setShowForm(false);
-    setEnderecoEditando(null);
+    setArmazemEditando(null);
     setIsEditMode(false);
   }
 
   function handleFormSuccess() {
-    listarEnderecosAPI();
+    listarArmazensAPI();
     fecharFormulario();
   }
 
@@ -84,7 +84,7 @@ function Endereco() {
     return (
       <div id="componente_listar_enderecos">
         <div className="header-container">
-          <h1>Listar Endereços</h1>
+          <h1>Listar Armazéns</h1>
         </div>
         <div className="loading-container">
           <p>Carregando...</p>
@@ -96,8 +96,8 @@ function Endereco() {
   return (
     <>
       {showForm && (
-        <FormEndereco
-          endereco={enderecoEditando}
+        <FormArmazem
+          armazem={armazemEditando}
           onClose={fecharFormulario}
           onSuccess={handleFormSuccess}
           isEdit={isEditMode}
@@ -106,8 +106,8 @@ function Endereco() {
 
       <div id="componente_listar_enderecos">
         <div className="header-container">
-          <h1>Listar Endereços</h1>
-          <button className="btn-adicionar" onClick={adicionarEndereco}>
+          <h1>Listar Armazéns</h1>
+          <button className="btn-adicionar" onClick={adicionarArmazem}>
             + Adicionar
           </button>
         </div>
@@ -122,44 +122,42 @@ function Endereco() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Rua</th>
-            <th>Número</th>
-            <th>Complemento</th>
-            <th>Bairro</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>CEP</th>
+            <th>Nome</th>
+            <th>Status</th>
+            <th>Posições</th>
+            <th>Produtos/Posição</th>
+            <th>Capacidade Total</th>
+            <th>Endereço ID</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {enderecos.length === 0 ? (
+          {armazens.length === 0 ? (
             <tr>
-              <td colSpan={9} className="no-data">
-                Nenhum endereço encontrado
+              <td colSpan={8} className="no-data">
+                Nenhum armazém encontrado
               </td>
             </tr>
           ) : (
-            enderecos.map((endereco) => (
-              <tr key={endereco.id}>
-                <td>{endereco.id}</td>
-                <td>{endereco.rua}</td>
-                <td>{endereco.numero}</td>
-                <td>{endereco.complemento}</td>
-                <td>{endereco.bairro}</td>
-                <td>{endereco.cidade}</td>
-                <td>{endereco.estado}</td>
-                <td>{endereco.cep}</td>
+            armazens.map((armazem) => (
+              <tr key={armazem.id}>
+                <td>{armazem.id}</td>
+                <td>{armazem.nomeArmazem}</td>
+                <td>{armazem.status}</td>
+                <td>{armazem.posicoes}</td>
+                <td>{armazem.produtoPosicao}</td>
+                <td>{armazem.capacidade}</td>
+                <td>{armazem.enderecoId}</td>
                 <td className="acoes">
                   <button
                     className="btn-editar"
-                    onClick={() => editarEndereco(endereco.id)}
+                    onClick={() => editarArmazem(armazem.id)}
                   >
                     Editar
                   </button>
                   <button
                     className="btn-apagar"
-                    onClick={() => deletarEndereco(endereco.id)}
+                    onClick={() => deletarArmazem(armazem.id)}
                   >
                     Apagar
                   </button>
@@ -174,5 +172,5 @@ function Endereco() {
   );
 }
 
-export default Endereco;
+export default Armazem;
 
